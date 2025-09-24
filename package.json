@@ -1,0 +1,45 @@
+{
+  "name": "fxcompare",
+  "version": "1.0.0",
+  "description": "一个现代化的SaaS外汇对比网页应用，提供实时汇率转换和货币对比功能",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx live-server --port=3000",
+    "build": "echo 'No build process needed for static site'",
+    "deploy": "echo 'Deploy to your preferred hosting service'"
+  },
+  "keywords": [
+    "forex",
+    "currency",
+    "converter",
+    "exchange-rate",
+    "saas",
+    "web-app",
+    "javascript",
+    "html5",
+    "css3"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/fxcompare.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/fxcompare/issues"
+  },
+  "homepage": "https://github.com/yourusername/fxcompare#readme",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

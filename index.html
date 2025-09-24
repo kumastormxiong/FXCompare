@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FXCompare - 外汇对比工具</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    <h1>FXCompare - 汇率对比</h1>
+                </div>
+                <div class="header-info">
+                <div class="last-updated">
+                    <i class="fas fa-clock"></i>
+                    <span>汇率更新时间: <span id="lastUpdate">--:--</span></span>
+                </div>
+                    <div class="refresh-btn" onclick="refreshRates()">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="function-description">
+                <div class="description-content">
+                    <h3><i class="fas fa-info-circle"></i> 功能说明</h3>
+                    <p>本网页提供实时外汇汇率对比功能，支持多货币同时转换。左侧选择源货币并输入金额，右侧显示对应的目标货币转换结果。底部汇总显示所有货币的等值金额，支持顶置常用货币。</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Ad Space 1 - Below Header -->
+        <div class="ad-space ad-space-header">
+            <div class="ad-placeholder">
+                <i class="fas fa-ad"></i>
+                <span>广告位 1</span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Panel - Currency Selection -->
+            <div class="left-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-coins"></i> 货币选择</h2>
+                    <div class="sync-options">
+                        <label class="sync-option">
+                            <input type="checkbox" id="syncCountries">
+                            <span class="checkmark"></span>
+                            左侧所有国家一致
+                        </label>
+                        <label class="sync-option">
+                            <input type="checkbox" id="syncAmounts">
+                            <span class="checkmark"></span>
+                            所有金额一致
+                        </label>
+                    </div>
+                </div>
+
+                <div class="currency-inputs" id="currencyInputs">
+                    <!-- Currency input items will be dynamically generated -->
+                </div>
+
+                <div class="add-currency-btn" onclick="addCurrencyInput()">
+                    <i class="fas fa-plus"></i>
+                    添加货币
+                </div>
+            </div>
+
+            <!-- Right Panel - Target Currency Selection -->
+            <div class="right-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-target"></i> 目标货币选择</h2>
+                    <div class="sync-options">
+                        <label class="sync-option">
+                            <input type="checkbox" id="syncTargetCountries">
+                            <span class="checkmark"></span>
+                            右侧所有国家一致
+                        </label>
+                        <label class="sync-option">
+                            <input type="checkbox" id="syncTargetAmounts">
+                            <span class="checkmark"></span>
+                            所有金额一致
+                        </label>
+                    </div>
+                </div>
+
+                <div class="currency-inputs" id="targetCurrencyInputs">
+                    <!-- Target currency input items will be dynamically generated -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Panel - Summary Results -->
+        <div class="bottom-panel">
+            <div class="panel-header">
+                <h2><i class="fas fa-calculator"></i> 左侧转换金额汇总</h2>
+                <div class="panel-instructions">
+                    <i class="fas fa-info-circle"></i>
+                    <span>双击金额可顶置，或点击右侧按钮顶置</span>
+                </div>
+            </div>
+            
+            <div class="summary-results-container" id="summaryResultsContainer">
+                <div class="no-results">
+                    <i class="fas fa-exchange-alt"></i>
+                    <p>请选择货币并输入金额以查看转换结果</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>&copy; 2024 FXCompare. 数据仅供参考，实际汇率以银行公布为准。</p>
+                </div>
+                
+                <!-- Ad Space 2 -->
+                <div class="ad-space ad-space-2">
+                    <div class="ad-placeholder">
+                        <i class="fas fa-ad"></i>
+                        <span>广告位 2</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>正在获取汇率数据...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
