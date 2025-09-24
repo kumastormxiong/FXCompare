@@ -31,8 +31,16 @@
                     <i class="fas fa-clock"></i>
                     <span>汇率更新时间: <span id="lastUpdate">--:--</span></span>
                 </div>
-                    <div class="refresh-btn" onclick="refreshRates()">
-                        <i class="fas fa-sync-alt"></i>
+                    <div class="header-controls">
+                        <div class="theme-toggle-btn" onclick="toggleTheme()" title="切换主题">
+                            <i class="fas fa-moon" id="themeIcon"></i>
+                        </div>
+                        <div class="language-toggle-btn" onclick="toggleLanguage()" title="切换语言">
+                            <i class="fas fa-globe" id="languageIcon"></i>
+                        </div>
+                        <div class="refresh-btn" onclick="refreshRates()" title="刷新汇率">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
                     </div>
                 </div>
             </div>

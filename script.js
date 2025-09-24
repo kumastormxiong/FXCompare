@@ -671,10 +671,83 @@ function refreshRates() {
     fxCompare.loadExchangeRates();
 }
 
+// 主题和语言切换功能
+function toggleTheme() {
+    const body = document.body;
+    const currentTheme = body.getAttribute('data-theme') || 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    body.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    // 更新图标
+    const themeIcon = document.getElementById('themeIcon');
+    themeIcon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+    
+    // 显示提示
+    const message = newTheme === 'dark' ? '已切换到暗色主题' : '已切换到亮色主题';
+    if (fxCompare) {
+        fxCompare.showToast(message, 'success');
+    }
+}
+
+function toggleLanguage() {
+    const body = document.body;
+    const currentLang = body.getAttribute('data-lang') || 'zh';
+    const newLang = currentLang === 'zh' ? 'en' : 'zh';
+    
+    body.setAttribute('data-lang', newLang);
+    localStorage.setItem('language', newLang);
+    
+    // 更新页面文本
+    updatePageLanguage(newLang);
+    
+    // 显示提示
+    const message = newLang === 'zh' ? '已切换到中文' : '已切换到英文';
+    if (fxCompare) {
+        fxCompare.showToast(message, 'success');
+    }
+}
+
+function updatePageLanguage(lang) {
+    // 这里可以添加更多语言切换逻辑
+    // 目前主要更新标题和功能说明
+    const title = document.querySelector('.logo h1');
+    const functionTitle = document.querySelector('.function-description h3');
+    const functionText = document.querySelector('.function-description p');
+    
+    if (lang === 'en') {
+        if (title) title.textContent = 'FXCompare - Exchange Rate Comparison';
+        if (functionTitle) functionTitle.innerHTML = '<i class="fas fa-info-circle"></i> Function Description';
+        if (functionText) functionText.textContent = 'This webpage provides real-time foreign exchange rate comparison functionality, supporting simultaneous conversion of multiple currencies. Select the source currency on the left and input the amount, the right side displays the corresponding target currency conversion results. The bottom summary displays the equivalent amounts of all currencies, supporting pinning of frequently used currencies.';
+    } else {
+        if (title) title.textContent = 'FXCompare - 汇率对比';
+        if (functionTitle) functionTitle.innerHTML = '<i class="fas fa-info-circle"></i> 功能说明';
+        if (functionText) functionText.textContent = '本网页提供实时外汇汇率对比功能，支持多货币同时转换。左侧选择源货币并输入金额，右侧显示对应的目标货币转换结果。底部汇总显示所有货币的等值金额，支持顶置常用货币。';
+    }
+}
+
+// 初始化主题和语言
+function initializeThemeAndLanguage() {
+    // 初始化主题
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.body.setAttribute('data-theme', savedTheme);
+    const themeIcon = document.getElementById('themeIcon');
+    if (themeIcon) {
+        themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+    }
+    
+    // 初始化语言
+    const savedLang = localStorage.getItem('language') || 'zh';
+    document.body.setAttribute('data-lang', savedLang);
+    updatePageLanguage(savedLang);
+}
+
 // 初始化应用
 let fxCompare;
 document.addEventListener('DOMContentLoaded', () => {
     fxCompare = new FXCompare();
+    initializeThemeAndLanguage();
 });
 
 // 响应式处理
