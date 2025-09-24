@@ -6,14 +6,14 @@
 }
 
 :root {
-    /* Dark Theme Colors */
-    --primary-bg: #0a0a0a;
+    /* Advanced Dark Theme Colors */
+    --primary-bg: #0c0c0c;
     --secondary-bg: #1a1a1a;
     --tertiary-bg: #2a2a2a;
     --accent-bg: #3a3a3a;
     
     --primary-text: #ffffff;
-    --secondary-text: #b0b0b0;
+    --secondary-text: #b8b8b8;
     --accent-text: #00d4ff;
     
     --primary-accent: #00d4ff;
@@ -25,12 +25,23 @@
     --border-color: #333333;
     --border-hover: #555555;
     
+    /* Enhanced Shadows with Multiple Colors */
     --shadow-light: 0 2px 8px rgba(0, 212, 255, 0.1);
     --shadow-medium: 0 4px 16px rgba(0, 212, 255, 0.15);
     --shadow-heavy: 0 8px 32px rgba(0, 212, 255, 0.2);
+    --shadow-glow: 0 0 20px rgba(0, 212, 255, 0.3);
     
-    --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
-    --gradient-secondary: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    /* Advanced Gradients */
+    --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #0099cc 50%, #0066aa 100%);
+    --gradient-secondary: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #3a3a3a 100%);
+    --gradient-accent: linear-gradient(135deg, #00d4ff 0%, #00a8ff 50%, #0099cc 100%);
+    --gradient-success: linear-gradient(135deg, #00ff88 0%, #00cc66 50%, #00aa44 100%);
+    --gradient-warning: linear-gradient(135deg, #ffaa00 0%, #ff8800 50%, #ff6600 100%);
+    --gradient-error: linear-gradient(135deg, #ff4444 0%, #cc3333 50%, #aa2222 100%);
+    --gradient-dark: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 50%, #2a2a2a 100%);
+    --gradient-card: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #3a3a3a 100%);
+    --gradient-button: linear-gradient(135deg, #00d4ff 0%, #0099cc 50%, #0066aa 100%);
+    --gradient-button-hover: linear-gradient(135deg, #00e6ff 0%, #00bbdd 50%, #0088bb 100%);
     
     --border-radius: 12px;
     --border-radius-small: 8px;
@@ -39,10 +50,11 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--primary-bg);
+    background: var(--gradient-dark);
     color: var(--primary-text);
     line-height: 1.6;
     overflow-x: hidden;
+    min-height: 100vh;
 }
 
 /* Container */
@@ -57,12 +69,25 @@ body {
 
 /* Header */
 .header {
-    background: var(--gradient-secondary);
+    background: var(--gradient-card);
     border-bottom: 1px solid var(--border-color);
     padding: 20px 0 0 0;
     margin-bottom: 30px;
-    box-shadow: var(--shadow-light);
+    box-shadow: var(--shadow-medium);
     border-radius: var(--border-radius) var(--border-radius) 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    opacity: 0.8;
 }
 
 .header-content {
@@ -89,10 +114,11 @@ body {
 .logo h1 {
     font-size: 2rem;
     font-weight: 700;
-    background: var(--gradient-primary);
+    background: var(--gradient-accent);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
 }
 
 .header-info {
@@ -110,7 +136,7 @@ body {
 }
 
 .refresh-btn {
-    background: var(--gradient-primary);
+    background: var(--gradient-button);
     border: none;
     border-radius: 50%;
     width: 40px;
@@ -121,11 +147,30 @@ body {
     cursor: pointer;
     transition: var(--transition);
     box-shadow: var(--shadow-light);
+    position: relative;
+    overflow: hidden;
+}
+
+.refresh-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-button-hover);
+    opacity: 0;
+    transition: var(--transition);
+    border-radius: 50%;
 }
 
 .refresh-btn:hover {
-    transform: rotate(180deg);
-    box-shadow: var(--shadow-medium);
+    transform: rotate(180deg) scale(1.1);
+    box-shadow: var(--shadow-glow);
+}
+
+.refresh-btn:hover::before {
+    opacity: 1;
 }
 
 .refresh-btn i {
@@ -151,11 +196,24 @@ body {
 
 /* Bottom Panel */
 .bottom-panel {
-    background: var(--secondary-bg);
+    background: var(--gradient-card);
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
     margin-bottom: 30px;
     box-shadow: var(--shadow-medium);
+    position: relative;
+    overflow: hidden;
+}
+
+.bottom-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient-primary);
+    opacity: 0.3;
 }
 
 .bottom-panel .panel-header {
@@ -330,11 +388,23 @@ body {
 
 /* Panels */
 .left-panel, .right-panel {
-    background: var(--secondary-bg);
+    background: var(--gradient-card);
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
     overflow: hidden;
     box-shadow: var(--shadow-medium);
+    position: relative;
+}
+
+.left-panel::before, .right-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient-primary);
+    opacity: 0.3;
 }
 
 .panel-header {
@@ -520,7 +590,7 @@ body {
     justify-content: center;
     gap: 10px;
     padding: 15px;
-    background: var(--gradient-primary);
+    background: var(--gradient-button);
     border: none;
     border-radius: var(--border-radius-small);
     color: white;
@@ -529,11 +599,29 @@ body {
     cursor: pointer;
     transition: var(--transition);
     margin: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.add-currency-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: var(--transition);
 }
 
 .add-currency-btn:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-medium);
+    box-shadow: var(--shadow-glow);
+    background: var(--gradient-button-hover);
+}
+
+.add-currency-btn:hover::before {
+    left: 100%;
 }
 
 /* Results */
@@ -601,17 +689,35 @@ body {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: var(--secondary-bg);
+    background: var(--gradient-card);
     border: 1px solid var(--border-color);
     cursor: pointer;
     transition: var(--transition);
     margin-left: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.pin-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-button);
+    opacity: 0;
+    transition: var(--transition);
+    border-radius: 50%;
 }
 
 .pin-button:hover {
-    background: var(--primary-accent);
-    border-color: var(--primary-accent);
     transform: scale(1.1);
+    box-shadow: var(--shadow-glow);
+}
+
+.pin-button:hover::before {
+    opacity: 1;
 }
 
 .pin-button i {

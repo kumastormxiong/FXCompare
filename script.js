@@ -2,58 +2,135 @@
 
 class FXCompare {
     constructor() {
-        this.currencies = [
-            { code: 'USD', name: '美元', flag: '🇺🇸', rate: 1 },
-            { code: 'EUR', name: '欧元', flag: '🇪🇺', rate: 0.85 },
-            { code: 'GBP', name: '英镑', flag: '🇬🇧', rate: 0.73 },
-            { code: 'JPY', name: '日元', flag: '🇯🇵', rate: 110 },
-            { code: 'CNY', name: '人民币', flag: '🇨🇳', rate: 6.45 },
-            { code: 'AUD', name: '澳元', flag: '🇦🇺', rate: 1.35 },
-            { code: 'CAD', name: '加元', flag: '🇨🇦', rate: 1.25 },
-            { code: 'CHF', name: '瑞士法郎', flag: '🇨🇭', rate: 0.92 },
-            { code: 'HKD', name: '港币', flag: '🇭🇰', rate: 7.8 },
-            { code: 'SGD', name: '新加坡元', flag: '🇸🇬', rate: 1.35 },
-            { code: 'NZD', name: '新西兰元', flag: '🇳🇿', rate: 1.42 },
-            { code: 'KRW', name: '韩元', flag: '🇰🇷', rate: 1180 },
-            { code: 'INR', name: '印度卢比', flag: '🇮🇳', rate: 74 },
-            { code: 'BRL', name: '巴西雷亚尔', flag: '🇧🇷', rate: 5.2 },
-            { code: 'RUB', name: '俄罗斯卢布', flag: '🇷🇺', rate: 73 },
-            { code: 'MXN', name: '墨西哥比索', flag: '🇲🇽', rate: 20 },
-            { code: 'ZAR', name: '南非兰特', flag: '🇿🇦', rate: 14.5 },
-            { code: 'TRY', name: '土耳其里拉', flag: '🇹🇷', rate: 8.5 },
-            { code: 'SEK', name: '瑞典克朗', flag: '🇸🇪', rate: 8.7 },
-            { code: 'NOK', name: '挪威克朗', flag: '🇳🇴', rate: 8.9 },
-            { code: 'DKK', name: '丹麦克朗', flag: '🇩🇰', rate: 6.3 },
-            { code: 'PLN', name: '波兰兹罗提', flag: '🇵🇱', rate: 3.9 },
-            { code: 'CZK', name: '捷克克朗', flag: '🇨🇿', rate: 21.5 },
-            { code: 'HUF', name: '匈牙利福林', flag: '🇭🇺', rate: 300 },
-            { code: 'ILS', name: '以色列新谢克尔', flag: '🇮🇱', rate: 3.2 },
-            { code: 'AED', name: '阿联酋迪拉姆', flag: '🇦🇪', rate: 3.67 },
-            { code: 'SAR', name: '沙特里亚尔', flag: '🇸🇦', rate: 3.75 },
-            { code: 'THB', name: '泰铢', flag: '🇹🇭', rate: 33 },
-            { code: 'MYR', name: '马来西亚林吉特', flag: '🇲🇾', rate: 4.2 },
-            { code: 'IDR', name: '印尼盾', flag: '🇮🇩', rate: 14300 }
+        // 货币信息配置（不包含汇率，汇率从API获取）
+        this.currencyConfig = [
+            { code: 'USD', name: '美元', flag: '🇺🇸' },
+            { code: 'EUR', name: '欧元', flag: '🇪🇺' },
+            { code: 'GBP', name: '英镑', flag: '🇬🇧' },
+            { code: 'JPY', name: '日元', flag: '🇯🇵' },
+            { code: 'CNY', name: '人民币', flag: '🇨🇳' },
+            { code: 'AUD', name: '澳元', flag: '🇦🇺' },
+            { code: 'CAD', name: '加元', flag: '🇨🇦' },
+            { code: 'CHF', name: '瑞士法郎', flag: '🇨🇭' },
+            { code: 'HKD', name: '港币', flag: '🇭🇰' },
+            { code: 'SGD', name: '新加坡元', flag: '🇸🇬' },
+            { code: 'NZD', name: '新西兰元', flag: '🇳🇿' },
+            { code: 'KRW', name: '韩元', flag: '🇰🇷' },
+            { code: 'INR', name: '印度卢比', flag: '🇮🇳' },
+            { code: 'BRL', name: '巴西雷亚尔', flag: '🇧🇷' },
+            { code: 'RUB', name: '俄罗斯卢布', flag: '🇷🇺' },
+            { code: 'MXN', name: '墨西哥比索', flag: '🇲🇽' },
+            { code: 'ZAR', name: '南非兰特', flag: '🇿🇦' },
+            { code: 'TRY', name: '土耳其里拉', flag: '🇹🇷' },
+            { code: 'SEK', name: '瑞典克朗', flag: '🇸🇪' },
+            { code: 'NOK', name: '挪威克朗', flag: '🇳🇴' },
+            { code: 'DKK', name: '丹麦克朗', flag: '🇩🇰' },
+            { code: 'PLN', name: '波兰兹罗提', flag: '🇵🇱' },
+            { code: 'CZK', name: '捷克克朗', flag: '🇨🇿' },
+            { code: 'HUF', name: '匈牙利福林', flag: '🇭🇺' },
+            { code: 'ILS', name: '以色列新谢克尔', flag: '🇮🇱' },
+            { code: 'AED', name: '阿联酋迪拉姆', flag: '🇦🇪' },
+            { code: 'SAR', name: '沙特里亚尔', flag: '🇸🇦' },
+            { code: 'THB', name: '泰铢', flag: '🇹🇭' },
+            { code: 'MYR', name: '马来西亚林吉特', flag: '🇲🇾' },
+            { code: 'IDR', name: '印尼盾', flag: '🇮🇩' }
         ];
         
+        this.currencies = []; // 将从API获取的汇率数据
         this.currencyInputs = [];
         this.targetCurrencyInputs = [];
         this.baseCurrency = 'USD';
         this.lastUpdate = null;
-        this.pinnedCurrencies = []; // 存储顶置的货币
+        this.pinnedCurrencies = [];
+        this.apiUrl = 'https://api.exchangerate-api.com/v4/latest/USD';
+        this.isLoading = false;
         
         this.init();
     }
     
     init() {
         this.setupEventListeners();
+        this.loadExchangeRates();
         this.addInitialCurrencyInput();
         this.updateLastUpdateTime();
-        this.simulateRealTimeRates();
         
-        // 模拟初始加载
-        setTimeout(() => {
+        // 设置定时更新汇率
+        this.setupRateUpdates();
+    }
+    
+    async loadExchangeRates() {
+        if (this.isLoading) return;
+        
+        this.isLoading = true;
+        this.showLoading();
+        
+        try {
+            const response = await fetch(this.apiUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('API响应数据:', data); // 调试用
+            
+            // 检查API响应格式
+            if (data.rates && typeof data.rates === 'object') {
+                this.updateCurrenciesFromAPI(data.rates);
+                this.updateLastUpdateTime();
+                this.updateResults();
+                this.showToast('汇率数据已更新', 'success');
+                this.showAPIStatus('success', 'API连接正常');
+            } else {
+                throw new Error('API响应格式不正确');
+            }
+            
+        } catch (error) {
+            console.error('获取汇率数据失败:', error);
+            this.loadFallbackRates();
+            this.showToast('使用备用汇率数据', 'warning');
+            this.showAPIStatus('error', 'API连接失败，使用备用数据');
+        } finally {
+            this.isLoading = false;
             this.hideLoading();
-        }, 1500);
+        }
+    }
+    
+    updateCurrenciesFromAPI(rates) {
+        this.currencies = this.currencyConfig.map(config => {
+            const rate = rates[config.code] || 1;
+            return {
+                code: config.code,
+                name: config.name,
+                flag: config.flag,
+                rate: rate
+            };
+        });
+    }
+    
+    loadFallbackRates() {
+        // 备用汇率数据（当API失败时使用，基于您提供的API数据格式）
+        const fallbackRates = {
+            'USD': 1, 'EUR': 0.847, 'GBP': 0.74, 'JPY': 147.69, 'CNY': 7.11,
+            'AUD': 1.52, 'CAD': 1.38, 'CHF': 0.792, 'HKD': 7.78, 'SGD': 1.28,
+            'NZD': 1.71, 'KRW': 1393.87, 'INR': 88.81, 'BRL': 5.34, 'RUB': 83.67,
+            'MXN': 18.34, 'ZAR': 17.26, 'TRY': 41.43, 'SEK': 9.33, 'NOK': 9.89,
+            'DKK': 6.32, 'PLN': 3.61, 'CZK': 20.54, 'HUF': 329.97, 'ILS': 3.34,
+            'AED': 3.67, 'SAR': 3.75, 'THB': 31.87, 'MYR': 4.2, 'IDR': 16668.28
+        };
+        
+        this.currencies = this.currencyConfig.map(config => ({
+            code: config.code,
+            name: config.name,
+            flag: config.flag,
+            rate: fallbackRates[config.code] || 1
+        }));
+    }
+    
+    setupRateUpdates() {
+        // 每5分钟更新一次汇率
+        setInterval(() => {
+            this.loadExchangeRates();
+        }, 5 * 60 * 1000);
     }
     
     setupEventListeners() {
@@ -475,21 +552,15 @@ class FXCompare {
         document.getElementById('lastUpdate').textContent = formattedTime;
     }
     
-    simulateRealTimeRates() {
-        // 模拟实时汇率更新
-        setInterval(() => {
-            this.currencies.forEach(currency => {
-                if (currency.code !== 'USD') {
-                    // 模拟汇率波动（±2%）
-                    const change = (Math.random() - 0.5) * 0.04;
-                    currency.rate = currency.rate * (1 + change);
-                }
-            });
-            
-            this.updateLastUpdateTime();
-            this.updateResults();
-        }, 30000); // 每30秒更新一次
+    // 添加API状态显示
+    showAPIStatus(status, message) {
+        const statusElement = document.getElementById('apiStatus');
+        if (statusElement) {
+            statusElement.textContent = message;
+            statusElement.className = `api-status ${status}`;
+        }
     }
+    
     
     showLoading() {
         document.getElementById('loadingOverlay').classList.add('active');
@@ -540,24 +611,12 @@ function addTargetCurrencyInput() {
 }
 
 function refreshRates() {
-    fxCompare.showLoading();
-    fxCompare.showToast('正在刷新汇率数据...', 'success');
+    if (fxCompare.isLoading) {
+        fxCompare.showToast('正在更新中，请稍候...', 'warning');
+        return;
+    }
     
-    // 模拟API调用
-    setTimeout(() => {
-        fxCompare.currencies.forEach(currency => {
-            if (currency.code !== 'USD') {
-                // 模拟新的汇率数据
-                const change = (Math.random() - 0.5) * 0.1;
-                currency.rate = currency.rate * (1 + change);
-            }
-        });
-        
-        fxCompare.updateLastUpdateTime();
-        fxCompare.updateResults();
-        fxCompare.hideLoading();
-        fxCompare.showToast('汇率数据已更新', 'success');
-    }, 2000);
+    fxCompare.loadExchangeRates();
 }
 
 // 初始化应用
