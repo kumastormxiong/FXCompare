@@ -50,9 +50,14 @@ class FXCompare {
     
     init() {
         this.setupEventListeners();
-        this.loadExchangeRates();
+        
+        // 先加载备用数据，确保界面正常显示
+        this.loadFallbackRates();
         this.addInitialCurrencyInput();
         this.updateLastUpdateTime();
+        
+        // 然后尝试加载真实API数据
+        this.loadExchangeRates();
         
         // 设置定时更新汇率
         this.setupRateUpdates();
@@ -104,6 +109,45 @@ class FXCompare {
                 flag: config.flag,
                 rate: rate
             };
+        });
+        
+        // 重新渲染所有货币选择器
+        this.refreshAllCurrencySelectors();
+    }
+    
+    refreshAllCurrencySelectors() {
+        // 重新渲染左侧货币选择器
+        this.currencyInputs.forEach(input => {
+            const element = document.querySelector(`[onclick*="${input.id}"]`).closest('.currency-input-item');
+            if (element) {
+                const select = element.querySelector('select');
+                if (select) {
+                    const currentValue = select.value;
+                    select.innerHTML = this.currencies.map(currency => 
+                        `<option value="${currency.code}">
+                            ${currency.flag} ${currency.code} - ${currency.name}
+                        </option>`
+                    ).join('');
+                    select.value = currentValue;
+                }
+            }
+        });
+        
+        // 重新渲染右侧目标货币选择器
+        this.targetCurrencyInputs.forEach(input => {
+            const element = document.querySelector(`[onclick*="${input.id}"]`).closest('.target-currency-input-item');
+            if (element) {
+                const select = element.querySelector('select');
+                if (select) {
+                    const currentValue = select.value;
+                    select.innerHTML = this.currencies.map(currency => 
+                        `<option value="${currency.code}">
+                            ${currency.flag} ${currency.code} - ${currency.name}
+                        </option>`
+                    ).join('');
+                    select.value = currentValue;
+                }
+            }
         });
     }
     
@@ -208,10 +252,14 @@ class FXCompare {
     createCurrencyInputElement(currencyInput) {
         const div = document.createElement('div');
         div.className = 'currency-input-item';
+        
+        // 确保currencies数组有数据，如果没有则使用currencyConfig
+        const currencyList = this.currencies.length > 0 ? this.currencies : this.currencyConfig;
+        
         div.innerHTML = `
             <div class="currency-select">
                 <select onchange="fxCompare.updateCurrency('${currencyInput.id}', this.value)">
-                    ${this.currencies.map(currency => 
+                    ${currencyList.map(currency => 
                         `<option value="${currency.code}" ${currency.code === currencyInput.currency ? 'selected' : ''}>
                             ${currency.flag} ${currency.code} - ${currency.name}
                         </option>`
@@ -238,10 +286,14 @@ class FXCompare {
     createTargetCurrencyInputElement(targetCurrencyInput) {
         const div = document.createElement('div');
         div.className = 'target-currency-input-item';
+        
+        // 确保currencies数组有数据，如果没有则使用currencyConfig
+        const currencyList = this.currencies.length > 0 ? this.currencies : this.currencyConfig;
+        
         div.innerHTML = `
             <div class="currency-select">
                 <select onchange="fxCompare.updateTargetCurrency('${targetCurrencyInput.id}', this.value)">
-                    ${this.currencies.map(currency => 
+                    ${currencyList.map(currency => 
                         `<option value="${currency.code}" ${currency.code === targetCurrencyInput.currency ? 'selected' : ''}>
                             ${currency.flag} ${currency.code} - ${currency.name}
                         </option>`
