@@ -62,17 +62,17 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 15px;
 }
 
 /* Header */
 .header {
     background: var(--gradient-card);
     border-bottom: 1px solid var(--border-color);
-    padding: 20px 0 0 0;
-    margin-bottom: 30px;
+    padding: 15px 0 0 0;
+    margin-bottom: 20px;
     box-shadow: var(--shadow-medium);
     border-radius: var(--border-radius) var(--border-radius) 0 0;
     position: relative;
@@ -95,8 +95,8 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 20px;
-    padding: 0 0 20px 0;
+    gap: 15px;
+    padding: 0 0 15px 0;
 }
 
 .logo {
@@ -112,7 +112,7 @@ body {
 }
 
 .logo h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 700;
     background: var(--gradient-accent);
     -webkit-background-clip: text;
@@ -124,7 +124,7 @@ body {
 .header-info {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
 }
 
 .last-updated {
@@ -182,9 +182,9 @@ body {
 .main-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    gap: 20px;
     flex: 1;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 @media (max-width: 768px) {
@@ -199,7 +199,7 @@ body {
     background: var(--gradient-card);
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     box-shadow: var(--shadow-medium);
     position: relative;
     overflow: hidden;
@@ -218,7 +218,7 @@ body {
 
 .bottom-panel .panel-header {
     background: var(--tertiary-bg);
-    padding: 20px;
+    padding: 15px;
     border-bottom: 1px solid var(--border-color);
     border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
@@ -255,8 +255,8 @@ body {
 }
 
 .summary-results-container {
-    padding: 20px;
-    min-height: 200px;
+    padding: 15px;
+    min-height: 180px;
 }
 
 .summary-results-container .no-results {
@@ -409,17 +409,17 @@ body {
 
 .panel-header {
     background: var(--tertiary-bg);
-    padding: 20px;
+    padding: 15px;
     border-bottom: 1px solid var(--border-color);
 }
 
 .panel-header h2 {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 1.3rem;
+    gap: 8px;
+    font-size: 1.2rem;
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .panel-header i {
@@ -429,7 +429,7 @@ body {
 /* Sync Options */
 .sync-options {
     display: flex;
-    gap: 20px;
+    gap: 15px;
     flex-wrap: wrap;
 }
 
@@ -478,18 +478,18 @@ body {
 
 /* Currency Inputs */
 .currency-inputs {
-    padding: 20px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 .currency-input-item {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 15px;
+    gap: 12px;
     align-items: center;
-    padding: 15px;
+    padding: 12px;
     background: var(--tertiary-bg);
     border-radius: var(--border-radius-small);
     border: 1px solid var(--border-color);
@@ -507,12 +507,12 @@ body {
 
 .currency-select select {
     width: 100%;
-    padding: 12px 15px;
+    padding: 10px 12px;
     background: var(--accent-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-small);
     color: var(--primary-text);
-    font-size: 1rem;
+    font-size: 0.95rem;
     cursor: pointer;
     transition: var(--transition);
 }
@@ -534,12 +534,12 @@ body {
 
 .amount-input input {
     width: 100%;
-    padding: 12px 15px;
+    padding: 10px 12px;
     background: var(--accent-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-small);
     color: var(--primary-text);
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: var(--transition);
 }
 
@@ -588,17 +588,17 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    padding: 15px;
+    gap: 8px;
+    padding: 12px;
     background: var(--gradient-button);
     border: none;
     border-radius: var(--border-radius-small);
     color: white;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
     transition: var(--transition);
-    margin: 20px;
+    margin: 15px;
     position: relative;
     overflow: hidden;
 }
@@ -650,11 +650,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: 12px;
     background: var(--tertiary-bg);
     border-radius: var(--border-radius-small);
     border: 1px solid var(--border-color);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     transition: var(--transition);
     cursor: pointer;
     position: relative;
@@ -767,12 +767,12 @@ body {
 .function-description {
     background: var(--tertiary-bg);
     border-top: 1px solid var(--border-color);
-    margin-top: 20px;
+    margin-top: 15px;
     border-radius: 0 0 var(--border-radius) var(--border-radius);
 }
 
 .description-content {
-    padding: 15px 20px 20px 20px;
+    padding: 12px 15px 15px 15px;
 }
 
 .description-content h3 {
@@ -799,10 +799,10 @@ body {
 
 /* Ad Spaces */
 .ad-space {
-    margin: 20px;
+    margin: 15px;
     border: 2px dashed var(--border-color);
     border-radius: var(--border-radius-small);
-    min-height: 100px;
+    min-height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -828,22 +828,22 @@ body {
 }
 
 .ad-space-header {
-    margin: 20px 0;
-    min-height: 80px;
+    margin: 15px 0;
+    min-height: 60px;
     background: var(--secondary-bg);
     border: 2px dashed var(--border-color);
     border-radius: var(--border-radius);
 }
 
 .ad-space-2 {
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 /* Footer */
 .footer {
     background: var(--secondary-bg);
     border-top: 1px solid var(--border-color);
-    padding: 20px 0;
+    padding: 15px 0;
     margin-top: auto;
 }
 
