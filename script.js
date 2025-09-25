@@ -821,11 +821,32 @@ function initializeThemeAndLanguage() {
     }
     
     // 初始化语言
-    const savedLang = localStorage.getItem('language') || 'zh';
+    const savedLang = localStorage.getItem('language') || 'en';
     document.body.setAttribute('data-lang', savedLang);
     console.log('Language initialized:', savedLang);
     console.log('Body data-lang attribute:', document.body.getAttribute('data-lang'));
     updatePageLanguage(savedLang);
+}
+
+// 访问统计功能
+function updateVisitCounter() {
+    // 获取当前访问次数
+    let visitCount = localStorage.getItem('visitCount') || 0;
+    visitCount = parseInt(visitCount) + 1;
+    
+    // 保存新的访问次数
+    localStorage.setItem('visitCount', visitCount);
+    
+    // 更新显示
+    const visitCountZh = document.getElementById('visitCount');
+    const visitCountEn = document.getElementById('visitCountEn');
+    
+    if (visitCountZh) {
+        visitCountZh.textContent = visitCount.toLocaleString();
+    }
+    if (visitCountEn) {
+        visitCountEn.textContent = visitCount.toLocaleString();
+    }
 }
 
 // 初始化应用
@@ -835,6 +856,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeThemeAndLanguage();
     // 然后初始化应用
     fxCompare = new FXCompare();
+    // 更新访问统计
+    updateVisitCounter();
 });
 
 // 响应式处理

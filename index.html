@@ -8,13 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3KHJFBSKGJ"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'GA_MEASUREMENT_ID');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-3KHJFBSKGJ');
     </script>
 </head>
 <body>
@@ -56,8 +57,8 @@
             </div>
         </header>
 
-        <!-- Ad Space 1 - Below Header -->
-        <div class="ad-space ad-space-header">
+        <!-- Ad Space 1 - Below Header (Hidden for now) -->
+        <div class="ad-space ad-space-header" style="display: none;">
             <div class="ad-placeholder">
                 <i class="fas fa-ad"></i>
                 <span class="zh-text">广告位 1</span>
@@ -153,10 +154,17 @@
                 <div class="footer-info">
                     <p class="zh-text">&copy; 2025 FXCompare. 数据仅供参考，实际汇率以银行公布为准。</p>
                     <p class="en-text">&copy; 2025 FXCompare. Data is for reference only, actual exchange rates are subject to bank announcements.</p>
+                    
+                    <!-- 访问统计 -->
+                    <div class="visit-counter">
+                        <i class="fas fa-eye"></i>
+                        <span class="zh-text">访问人次: <span id="visitCount">0</span></span>
+                        <span class="en-text">Visits: <span id="visitCountEn">0</span></span>
+                    </div>
                 </div>
                 
-                <!-- Ad Space 2 -->
-                <div class="ad-space ad-space-2">
+                <!-- Ad Space 2 (Hidden for now) -->
+                <div class="ad-space ad-space-2" style="display: none;">
                     <div class="ad-placeholder">
                         <i class="fas fa-ad"></i>
                         <span class="zh-text">广告位 2</span>
