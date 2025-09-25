@@ -4,36 +4,36 @@ class FXCompare {
     constructor() {
         // 货币信息配置（不包含汇率，汇率从API获取）
         this.currencyConfig = [
-            { code: 'USD', name: '美元', flag: '🇺🇸' },
-            { code: 'EUR', name: '欧元', flag: '🇪🇺' },
-            { code: 'GBP', name: '英镑', flag: '🇬🇧' },
-            { code: 'JPY', name: '日元', flag: '🇯🇵' },
-            { code: 'CNY', name: '人民币', flag: '🇨🇳' },
-            { code: 'AUD', name: '澳元', flag: '🇦🇺' },
-            { code: 'CAD', name: '加元', flag: '🇨🇦' },
-            { code: 'CHF', name: '瑞士法郎', flag: '🇨🇭' },
-            { code: 'HKD', name: '港币', flag: '🇭🇰' },
-            { code: 'SGD', name: '新加坡元', flag: '🇸🇬' },
-            { code: 'NZD', name: '新西兰元', flag: '🇳🇿' },
-            { code: 'KRW', name: '韩元', flag: '🇰🇷' },
-            { code: 'INR', name: '印度卢比', flag: '🇮🇳' },
-            { code: 'BRL', name: '巴西雷亚尔', flag: '🇧🇷' },
-            { code: 'RUB', name: '俄罗斯卢布', flag: '🇷🇺' },
-            { code: 'MXN', name: '墨西哥比索', flag: '🇲🇽' },
-            { code: 'ZAR', name: '南非兰特', flag: '🇿🇦' },
-            { code: 'TRY', name: '土耳其里拉', flag: '🇹🇷' },
-            { code: 'SEK', name: '瑞典克朗', flag: '🇸🇪' },
-            { code: 'NOK', name: '挪威克朗', flag: '🇳🇴' },
-            { code: 'DKK', name: '丹麦克朗', flag: '🇩🇰' },
-            { code: 'PLN', name: '波兰兹罗提', flag: '🇵🇱' },
-            { code: 'CZK', name: '捷克克朗', flag: '🇨🇿' },
-            { code: 'HUF', name: '匈牙利福林', flag: '🇭🇺' },
-            { code: 'ILS', name: '以色列新谢克尔', flag: '🇮🇱' },
-            { code: 'AED', name: '阿联酋迪拉姆', flag: '🇦🇪' },
-            { code: 'SAR', name: '沙特里亚尔', flag: '🇸🇦' },
-            { code: 'THB', name: '泰铢', flag: '🇹🇭' },
-            { code: 'MYR', name: '马来西亚林吉特', flag: '🇲🇾' },
-            { code: 'IDR', name: '印尼盾', flag: '🇮🇩' }
+            { code: 'USD', name: '美元', nameEn: 'US Dollar', flag: '🇺🇸' },
+            { code: 'EUR', name: '欧元', nameEn: 'Euro', flag: '🇪🇺' },
+            { code: 'GBP', name: '英镑', nameEn: 'British Pound', flag: '🇬🇧' },
+            { code: 'JPY', name: '日元', nameEn: 'Japanese Yen', flag: '🇯🇵' },
+            { code: 'CNY', name: '人民币', nameEn: 'Chinese Yuan', flag: '🇨🇳' },
+            { code: 'AUD', name: '澳元', nameEn: 'Australian Dollar', flag: '🇦🇺' },
+            { code: 'CAD', name: '加元', nameEn: 'Canadian Dollar', flag: '🇨🇦' },
+            { code: 'CHF', name: '瑞士法郎', nameEn: 'Swiss Franc', flag: '🇨🇭' },
+            { code: 'HKD', name: '港币', nameEn: 'Hong Kong Dollar', flag: '🇭🇰' },
+            { code: 'SGD', name: '新加坡元', nameEn: 'Singapore Dollar', flag: '🇸🇬' },
+            { code: 'NZD', name: '新西兰元', nameEn: 'New Zealand Dollar', flag: '🇳🇿' },
+            { code: 'KRW', name: '韩元', nameEn: 'South Korean Won', flag: '🇰🇷' },
+            { code: 'INR', name: '印度卢比', nameEn: 'Indian Rupee', flag: '🇮🇳' },
+            { code: 'BRL', name: '巴西雷亚尔', nameEn: 'Brazilian Real', flag: '🇧🇷' },
+            { code: 'RUB', name: '俄罗斯卢布', nameEn: 'Russian Ruble', flag: '🇷🇺' },
+            { code: 'MXN', name: '墨西哥比索', nameEn: 'Mexican Peso', flag: '🇲🇽' },
+            { code: 'ZAR', name: '南非兰特', nameEn: 'South African Rand', flag: '🇿🇦' },
+            { code: 'TRY', name: '土耳其里拉', nameEn: 'Turkish Lira', flag: '🇹🇷' },
+            { code: 'SEK', name: '瑞典克朗', nameEn: 'Swedish Krona', flag: '🇸🇪' },
+            { code: 'NOK', name: '挪威克朗', nameEn: 'Norwegian Krone', flag: '🇳🇴' },
+            { code: 'DKK', name: '丹麦克朗', nameEn: 'Danish Krone', flag: '🇩🇰' },
+            { code: 'PLN', name: '波兰兹罗提', nameEn: 'Polish Zloty', flag: '🇵🇱' },
+            { code: 'CZK', name: '捷克克朗', nameEn: 'Czech Koruna', flag: '🇨🇿' },
+            { code: 'HUF', name: '匈牙利福林', nameEn: 'Hungarian Forint', flag: '🇭🇺' },
+            { code: 'ILS', name: '以色列新谢克尔', nameEn: 'Israeli Shekel', flag: '🇮🇱' },
+            { code: 'AED', name: '阿联酋迪拉姆', nameEn: 'UAE Dirham', flag: '🇦🇪' },
+            { code: 'SAR', name: '沙特里亚尔', nameEn: 'Saudi Riyal', flag: '🇸🇦' },
+            { code: 'THB', name: '泰铢', nameEn: 'Thai Baht', flag: '🇹🇭' },
+            { code: 'MYR', name: '马来西亚林吉特', nameEn: 'Malaysian Ringgit', flag: '🇲🇾' },
+            { code: 'IDR', name: '印尼盾', nameEn: 'Indonesian Rupiah', flag: '🇮🇩' }
         ];
         
         this.currencies = []; // 将从API获取的汇率数据
@@ -110,6 +110,7 @@ class FXCompare {
             return {
                 code: config.code,
                 name: config.name,
+                nameEn: config.nameEn,
                 flag: config.flag,
                 rate: rate
             };
@@ -120,6 +121,8 @@ class FXCompare {
     }
     
     refreshAllCurrencySelectors() {
+        const currentLang = document.body.getAttribute('data-lang') || 'zh';
+        
         // 重新渲染左侧货币选择器
         this.currencyInputs.forEach(input => {
             const element = document.querySelector(`[onclick*="${input.id}"]`).closest('.currency-input-item');
@@ -127,11 +130,12 @@ class FXCompare {
                 const select = element.querySelector('select');
                 if (select) {
                     const currentValue = select.value;
-                    select.innerHTML = this.currencies.map(currency => 
-                        `<option value="${currency.code}">
-                            ${currency.flag} ${currency.code} - ${currency.name}
-                        </option>`
-                    ).join('');
+                    select.innerHTML = this.currencies.map(currency => {
+                        const displayName = currentLang === 'en' ? (currency.nameEn || currency.name) : currency.name;
+                        return `<option value="${currency.code}">
+                            ${currency.flag} ${currency.code} - ${displayName}
+                        </option>`;
+                    }).join('');
                     select.value = currentValue;
                 }
             }
@@ -144,11 +148,12 @@ class FXCompare {
                 const select = element.querySelector('select');
                 if (select) {
                     const currentValue = select.value;
-                    select.innerHTML = this.currencies.map(currency => 
-                        `<option value="${currency.code}">
-                            ${currency.flag} ${currency.code} - ${currency.name}
-                        </option>`
-                    ).join('');
+                    select.innerHTML = this.currencies.map(currency => {
+                        const displayName = currentLang === 'en' ? (currency.nameEn || currency.name) : currency.name;
+                        return `<option value="${currency.code}">
+                            ${currency.flag} ${currency.code} - ${displayName}
+                        </option>`;
+                    }).join('');
                     select.value = currentValue;
                 }
             }
@@ -260,21 +265,25 @@ class FXCompare {
         // 确保currencies数组有数据，如果没有则使用currencyConfig
         const currencyList = this.currencies.length > 0 ? this.currencies : this.currencyConfig;
         
+        const currentLang = document.body.getAttribute('data-lang') || 'zh';
+        const placeholderText = currentLang === 'en' ? 'Enter amount' : '输入金额';
+        
         div.innerHTML = `
             <div class="currency-select">
                 <select onchange="fxCompare.updateCurrency('${currencyInput.id}', this.value)">
-                    ${currencyList.map(currency => 
-                        `<option value="${currency.code}" ${currency.code === currencyInput.currency ? 'selected' : ''}>
-                            ${currency.flag} ${currency.code} - ${currency.name}
-                        </option>`
-                    ).join('')}
+                    ${currencyList.map(currency => {
+                        const displayName = currentLang === 'en' ? (currency.nameEn || currency.name) : currency.name;
+                        return `<option value="${currency.code}" ${currency.code === currencyInput.currency ? 'selected' : ''}>
+                            ${currency.flag} ${currency.code} - ${displayName}
+                        </option>`;
+                    }).join('')}
                 </select>
             </div>
             <div class="amount-input">
                 <input 
                     type="number" 
                     value="${currencyInput.amount}" 
-                    placeholder="输入金额"
+                    placeholder="${placeholderText}"
                     oninput="fxCompare.updateAmount('${currencyInput.id}', this.value)"
                     onchange="fxCompare.updateAmount('${currencyInput.id}', this.value)"
                 >
@@ -294,21 +303,25 @@ class FXCompare {
         // 确保currencies数组有数据，如果没有则使用currencyConfig
         const currencyList = this.currencies.length > 0 ? this.currencies : this.currencyConfig;
         
+        const currentLang = document.body.getAttribute('data-lang') || 'zh';
+        const placeholderText = currentLang === 'en' ? 'Converted Amount' : '转换金额';
+        
         div.innerHTML = `
             <div class="currency-select">
                 <select onchange="fxCompare.updateTargetCurrency('${targetCurrencyInput.id}', this.value)">
-                    ${currencyList.map(currency => 
-                        `<option value="${currency.code}" ${currency.code === targetCurrencyInput.currency ? 'selected' : ''}>
-                            ${currency.flag} ${currency.code} - ${currency.name}
-                        </option>`
-                    ).join('')}
+                    ${currencyList.map(currency => {
+                        const displayName = currentLang === 'en' ? (currency.nameEn || currency.name) : currency.name;
+                        return `<option value="${currency.code}" ${currency.code === targetCurrencyInput.currency ? 'selected' : ''}>
+                            ${currency.flag} ${currency.code} - ${displayName}
+                        </option>`;
+                    }).join('')}
                 </select>
             </div>
             <div class="amount-input">
                 <input 
                     type="text" 
                     value="0.00" 
-                    placeholder="转换金额"
+                    placeholder="${placeholderText}"
                     readonly
                 >
                 <button class="remove-currency" onclick="fxCompare.removeTargetCurrencyInput('${targetCurrencyInput.id}')">
@@ -752,6 +765,11 @@ function updatePageLanguage(lang) {
     }
     if (refreshBtn) {
         refreshBtn.title = lang === 'en' ? 'Refresh Rates' : '刷新汇率';
+    }
+    
+    // 重新渲染所有货币选择器以更新语言
+    if (fxCompare) {
+        fxCompare.refreshAllCurrencySelectors();
     }
     
     // 更新货币名称（如果需要的话）
