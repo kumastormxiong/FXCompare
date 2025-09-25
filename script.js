@@ -201,11 +201,6 @@ class FXCompare {
             }
         });
         
-        document.getElementById('syncTargetAmounts').addEventListener('change', (e) => {
-            if (e.target.checked) {
-                this.syncAllTargetAmounts();
-            }
-        });
     }
     
     addInitialCurrencyInput() {
@@ -452,13 +447,6 @@ class FXCompare {
         this.updateResults();
     }
     
-    syncAllTargetAmounts() {
-        if (this.targetCurrencyInputs.length === 0) return;
-        
-        // 对于目标货币，我们不需要同步金额，因为金额是计算得出的
-        // 这个函数保留是为了保持界面一致性
-        this.updateResults();
-    }
     
     updateResults() {
         this.updateTargetCurrencyAmounts();
