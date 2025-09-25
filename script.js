@@ -617,9 +617,20 @@ class FXCompare {
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
-        const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-        const weekday = weekdays[now.getDay()];
-        const time = now.toLocaleTimeString('zh-CN', { hour12: false });
+        
+        // 根据当前语言设置星期名称
+        const currentLang = document.body.getAttribute('data-lang') || 'zh';
+        let weekday, time;
+        
+        if (currentLang === 'en') {
+            const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            weekday = weekdays[now.getDay()];
+            time = now.toLocaleTimeString('en-US', { hour12: false });
+        } else {
+            const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            weekday = weekdays[now.getDay()];
+            time = now.toLocaleTimeString('zh-CN', { hour12: false });
+        }
         
         const formattedTime = `${year}-${month}-${day} ${weekday} ${time}`;
         document.getElementById('lastUpdate').textContent = formattedTime;
@@ -775,6 +786,7 @@ function updatePageLanguage(lang) {
     if (fxCompare) {
         fxCompare.refreshAllCurrencySelectors();
         fxCompare.updateSummaryResults();
+        fxCompare.updateLastUpdateTime();
     }
     
     // 更新货币名称（如果需要的话）
@@ -800,6 +812,8 @@ function initializeThemeAndLanguage() {
     // 初始化语言
     const savedLang = localStorage.getItem('language') || 'zh';
     document.body.setAttribute('data-lang', savedLang);
+    console.log('Language initialized:', savedLang);
+    console.log('Body data-lang attribute:', document.body.getAttribute('data-lang'));
     updatePageLanguage(savedLang);
 }
 

@@ -1187,11 +1187,20 @@ body {
 
 /* Language Styles */
 [data-lang="en"] .zh-text {
-    display: none;
+    display: none !important;
 }
 
 [data-lang="zh"] .en-text {
-    display: none;
+    display: none !important;
+}
+
+/* 确保语言切换规则优先级 */
+body[data-lang="en"] .zh-text {
+    display: none !important;
+}
+
+body[data-lang="zh"] .en-text {
+    display: none !important;
 }
 
 /* Theme Icon States */
