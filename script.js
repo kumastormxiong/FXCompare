@@ -83,9 +83,6 @@ class FXCompare {
                 this.updateCurrenciesFromAPI(data.rates);
                 this.updateLastUpdateTime();
                 this.updateResults();
-                const currentLang = document.body.getAttribute('data-lang') || 'zh';
-                const message = currentLang === 'en' ? 'Exchange rate data updated' : '汇率数据已更新';
-                this.showToast(message, 'success');
                 this.showAPIStatus('success', '');
             } else {
                 throw new Error('API响应格式不正确');
@@ -94,9 +91,6 @@ class FXCompare {
         } catch (error) {
             console.error('获取汇率数据失败:', error);
             this.loadFallbackRates();
-            const currentLang = document.body.getAttribute('data-lang') || 'zh';
-            const message = currentLang === 'en' ? 'Using backup exchange rate data' : '使用备用汇率数据';
-            this.showToast(message, 'warning');
             this.showAPIStatus('error', '');
         } finally {
             this.isLoading = false;
