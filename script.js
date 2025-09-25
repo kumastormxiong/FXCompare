@@ -633,7 +633,18 @@ class FXCompare {
         }
         
         const formattedTime = `${year}-${month}-${day} ${weekday} ${time}`;
-        document.getElementById('lastUpdate').textContent = formattedTime;
+        
+        // 更新中文时间显示
+        const lastUpdateZh = document.getElementById('lastUpdate');
+        if (lastUpdateZh) {
+            lastUpdateZh.textContent = formattedTime;
+        }
+        
+        // 更新英文时间显示
+        const lastUpdateEn = document.getElementById('lastUpdateEn');
+        if (lastUpdateEn) {
+            lastUpdateEn.textContent = formattedTime;
+        }
     }
     
     // 添加API状态显示
