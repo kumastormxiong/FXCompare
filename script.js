@@ -504,12 +504,14 @@ class FXCompare {
     
     updateSummaryResults() {
         const container = document.getElementById('summaryResultsContainer');
+        const currentLang = document.body.getAttribute('data-lang') || 'zh';
         
         if (this.currencyInputs.length === 0 || this.currencyInputs.every(input => input.amount === 0)) {
+            const noResultsText = currentLang === 'en' ? 'Please select currencies and enter amounts to view conversion results' : '请选择货币并输入金额以查看转换结果';
             container.innerHTML = `
                 <div class="no-results">
                     <i class="fas fa-exchange-alt"></i>
-                    <p>请选择货币并输入金额以查看转换结果</p>
+                    <p>${noResultsText}</p>
                 </div>
             `;
             return;
@@ -526,12 +528,13 @@ class FXCompare {
         
         container.innerHTML = sortedResults.map(result => {
             const isPinned = this.pinnedCurrencies.includes(result.code);
+            const displayName = currentLang === 'en' ? (result.nameEn || result.name) : result.name;
             return `
                 <div class="result-item ${isPinned ? 'pinned' : ''}" ondblclick="fxCompare.togglePin('${result.code}')">
                     <div class="result-currency">
                         <div class="currency-flag">${result.flag}</div>
                         <div>
-                            <div class="currency-name">${result.name}</div>
+                            <div class="currency-name">${displayName}</div>
                             <div class="currency-code">${result.code}</div>
                         </div>
                     </div>
@@ -584,6 +587,7 @@ class FXCompare {
                 results.push({
                     code: currency.code,
                     name: currency.name,
+                    nameEn: currency.nameEn,
                     flag: currency.flag,
                     amount: this.formatAmount(amount)
                 });
@@ -770,6 +774,7 @@ function updatePageLanguage(lang) {
     // 重新渲染所有货币选择器以更新语言
     if (fxCompare) {
         fxCompare.refreshAllCurrencySelectors();
+        fxCompare.updateSummaryResults();
     }
     
     // 更新货币名称（如果需要的话）
