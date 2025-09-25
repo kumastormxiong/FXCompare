@@ -806,8 +806,10 @@ function initializeThemeAndLanguage() {
 // 初始化应用
 let fxCompare;
 document.addEventListener('DOMContentLoaded', () => {
-    fxCompare = new FXCompare();
+    // 先初始化主题和语言
     initializeThemeAndLanguage();
+    // 然后初始化应用
+    fxCompare = new FXCompare();
 });
 
 // 响应式处理
