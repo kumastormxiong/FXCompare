@@ -2,6 +2,10 @@
 
 一个现代化的SaaS外汇对比网页应用，提供实时汇率转换和货币对比功能。
 
+## 🌐 在线访问
+
+**立即体验**: [https://kumastormxiong.github.io/FXCompare/](https://kumastormxiong.github.io/FXCompare/)
+
 **Copyright (c) 2025 FXCompare. All rights reserved.**
 
 ## 🌟 功能特性
