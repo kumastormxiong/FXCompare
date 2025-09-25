@@ -83,8 +83,10 @@ class FXCompare {
                 this.updateCurrenciesFromAPI(data.rates);
                 this.updateLastUpdateTime();
                 this.updateResults();
-                this.showToast('汇率数据已更新', 'success');
-                this.showAPIStatus('success', 'API连接正常');
+                const currentLang = document.body.getAttribute('data-lang') || 'zh';
+                const message = currentLang === 'en' ? 'Exchange rate data updated' : '汇率数据已更新';
+                this.showToast(message, 'success');
+                this.showAPIStatus('success', '');
             } else {
                 throw new Error('API响应格式不正确');
             }
@@ -92,8 +94,10 @@ class FXCompare {
         } catch (error) {
             console.error('获取汇率数据失败:', error);
             this.loadFallbackRates();
-            this.showToast('使用备用汇率数据', 'warning');
-            this.showAPIStatus('error', 'API连接失败，使用备用数据');
+            const currentLang = document.body.getAttribute('data-lang') || 'zh';
+            const message = currentLang === 'en' ? 'Using backup exchange rate data' : '使用备用汇率数据';
+            this.showToast(message, 'warning');
+            this.showAPIStatus('error', '');
         } finally {
             this.isLoading = false;
             this.hideLoading();
@@ -606,11 +610,25 @@ class FXCompare {
     
     // 添加API状态显示
     showAPIStatus(status, message) {
-        const statusElement = document.getElementById('apiStatus');
-        if (statusElement) {
-            statusElement.textContent = message;
-            statusElement.className = `api-status ${status}`;
+        const currentLang = document.body.getAttribute('data-lang') || 'zh';
+        let statusMessages;
+        
+        if (currentLang === 'en') {
+            statusMessages = {
+                'success': 'Exchange rate data updated',
+                'error': 'Unable to fetch latest rates, using backup data',
+                'loading': 'Fetching exchange rate data...'
+            };
+        } else {
+            statusMessages = {
+                'success': '汇率数据已更新',
+                'error': '无法获取最新汇率，使用备用数据',
+                'loading': '正在获取汇率数据...'
+            };
         }
+        
+        const finalMessage = statusMessages[status] || message;
+        this.showToast(finalMessage, status);
     }
     
     
@@ -685,7 +703,13 @@ function toggleTheme() {
     themeIcon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
     
     // 显示提示
-    const message = newTheme === 'dark' ? '已切换到暗色主题' : '已切换到亮色主题';
+    const currentLang = document.body.getAttribute('data-lang') || 'zh';
+    let message;
+    if (currentLang === 'en') {
+        message = newTheme === 'dark' ? 'Switched to dark theme' : 'Switched to light theme';
+    } else {
+        message = newTheme === 'dark' ? '已切换到暗色主题' : '已切换到亮色主题';
+    }
     if (fxCompare) {
         fxCompare.showToast(message, 'success');
     }
@@ -703,28 +727,41 @@ function toggleLanguage() {
     updatePageLanguage(newLang);
     
     // 显示提示
-    const message = newLang === 'zh' ? '已切换到中文' : '已切换到英文';
+    let message;
+    if (newLang === 'zh') {
+        message = '已切换到中文';
+    } else {
+        message = 'Switched to English';
+    }
     if (fxCompare) {
         fxCompare.showToast(message, 'success');
     }
 }
 
 function updatePageLanguage(lang) {
-    // 这里可以添加更多语言切换逻辑
-    // 目前主要更新标题和功能说明
-    const title = document.querySelector('.logo h1');
-    const functionTitle = document.querySelector('.function-description h3');
-    const functionText = document.querySelector('.function-description p');
+    // 更新所有按钮的title属性
+    const themeBtn = document.querySelector('.theme-toggle-btn');
+    const langBtn = document.querySelector('.language-toggle-btn');
+    const refreshBtn = document.querySelector('.refresh-btn');
     
-    if (lang === 'en') {
-        if (title) title.textContent = 'FXCompare - Exchange Rate Comparison';
-        if (functionTitle) functionTitle.innerHTML = '<i class="fas fa-info-circle"></i> Function Description';
-        if (functionText) functionText.textContent = 'This webpage provides real-time foreign exchange rate comparison functionality, supporting simultaneous conversion of multiple currencies. Select the source currency on the left and input the amount, the right side displays the corresponding target currency conversion results. The bottom summary displays the equivalent amounts of all currencies, supporting pinning of frequently used currencies.';
-    } else {
-        if (title) title.textContent = 'FXCompare - 汇率对比';
-        if (functionTitle) functionTitle.innerHTML = '<i class="fas fa-info-circle"></i> 功能说明';
-        if (functionText) functionText.textContent = '本网页提供实时外汇汇率对比功能，支持多货币同时转换。左侧选择源货币并输入金额，右侧显示对应的目标货币转换结果。底部汇总显示所有货币的等值金额，支持顶置常用货币。';
+    if (themeBtn) {
+        themeBtn.title = lang === 'en' ? 'Toggle Theme' : '切换主题';
     }
+    if (langBtn) {
+        langBtn.title = lang === 'en' ? 'Toggle Language' : '切换语言';
+    }
+    if (refreshBtn) {
+        refreshBtn.title = lang === 'en' ? 'Refresh Rates' : '刷新汇率';
+    }
+    
+    // 更新货币名称（如果需要的话）
+    updateCurrencyNames(lang);
+}
+
+function updateCurrencyNames(lang) {
+    // 这里可以添加货币名称的多语言支持
+    // 目前货币名称保持英文代码，但可以扩展为多语言
+    console.log('Currency names updated for language:', lang);
 }
 
 // 初始化主题和语言
