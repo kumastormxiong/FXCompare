@@ -8,14 +8,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     
-    <!-- Google tag (gtag.js) -->
+    <!-- Google Analytics - 隐私保护版本 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3KHJFBSKGJ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
-      gtag('config', 'G-3KHJFBSKGJ');
+      
+      // 隐私保护配置
+      gtag('config', 'G-3KHJFBSKGJ', {
+        'anonymize_ip': true,
+        'cookie_flags': 'SameSite=None;Secure',
+        'allow_google_signals': false,
+        'allow_ad_personalization_signals': false
+      });
     </script>
 </head>
 <body>
@@ -154,6 +160,12 @@
                 <div class="footer-info">
                     <p class="zh-text">&copy; 2025 FXCompare. 数据仅供参考，实际汇率以银行公布为准。</p>
                     <p class="en-text">&copy; 2025 FXCompare. Data is for reference only, actual exchange rates are subject to bank announcements.</p>
+                    
+                    <!-- 隐私保护声明 -->
+                    <div class="privacy-notice">
+                        <small class="zh-text">🔒 隐私保护：我们使用匿名化分析，不收集个人身份信息</small>
+                        <small class="en-text">🔒 Privacy Protected: Anonymous analytics only, no personal data collected</small>
+                    </div>
                     
                     <!-- 访问统计 -->
                     <div class="visit-counter">

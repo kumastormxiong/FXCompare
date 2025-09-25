@@ -1250,3 +1250,18 @@ body[data-lang="zh"] .en-text {
     font-weight: 600;
     font-size: 1.1rem;
 }
+
+/* Privacy Notice Styles */
+.privacy-notice {
+    margin-top: 8px;
+    padding: 6px 10px;
+    background: rgba(0, 212, 255, 0.1);
+    border-radius: 6px;
+    border-left: 3px solid var(--primary-accent);
+}
+
+.privacy-notice small {
+    color: var(--secondary-text);
+    font-size: 0.8rem;
+    line-height: 1.4;
+}

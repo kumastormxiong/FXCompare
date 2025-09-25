@@ -76,7 +76,7 @@ class FXCompare {
             }
             
             const data = await response.json();
-            console.log('API响应数据:', data); // 调试用
+            // API数据已接收
             
             // 检查API响应格式
             if (data.rates && typeof data.rates === 'object') {
@@ -807,7 +807,7 @@ function updatePageLanguage(lang) {
 function updateCurrencyNames(lang) {
     // 这里可以添加货币名称的多语言支持
     // 目前货币名称保持英文代码，但可以扩展为多语言
-    console.log('Currency names updated for language:', lang);
+    // 货币名称已更新
 }
 
 // 初始化主题和语言
@@ -823,8 +823,7 @@ function initializeThemeAndLanguage() {
     // 初始化语言
     const savedLang = localStorage.getItem('language') || 'en';
     document.body.setAttribute('data-lang', savedLang);
-    console.log('Language initialized:', savedLang);
-    console.log('Body data-lang attribute:', document.body.getAttribute('data-lang'));
+    // 语言初始化完成
     updatePageLanguage(savedLang);
 }
 
@@ -876,7 +875,7 @@ async function getRealAnalyticsData() {
         const data = await response.json();
         return data.totalUsers;
     } catch (error) {
-        console.log('无法获取GA数据，使用模拟数据');
+        // 使用备用数据
         return null;
     }
 }
@@ -909,7 +908,7 @@ window.addEventListener('error', (e) => {
 if ('performance' in window) {
     window.addEventListener('load', () => {
         const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-        console.log(`页面加载时间: ${loadTime}ms`);
+        // 页面加载完成
         
         // 发送到Google Analytics
         if (typeof gtag !== 'undefined') {
