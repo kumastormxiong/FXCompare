@@ -828,24 +828,56 @@ function initializeThemeAndLanguage() {
     updatePageLanguage(savedLang);
 }
 
-// 访问统计功能
+// 访问统计功能 - 显示实时访问状态
 function updateVisitCounter() {
-    // 获取当前访问次数
-    let visitCount = localStorage.getItem('visitCount') || 0;
-    visitCount = parseInt(visitCount) + 1;
+    // 检查Google Analytics是否已加载
+    if (typeof gtag !== 'undefined') {
+        // 发送页面浏览事件到Google Analytics
+        gtag('event', 'page_view', {
+            'page_title': document.title,
+            'page_location': window.location.href
+        });
+        
+        // 发送自定义事件
+        gtag('event', 'visit_counter', {
+            'event_category': 'engagement',
+            'event_label': 'page_visit'
+        });
+    }
     
-    // 保存新的访问次数
-    localStorage.setItem('visitCount', visitCount);
-    
-    // 更新显示
+    // 显示实时访问状态
     const visitCountZh = document.getElementById('visitCount');
     const visitCountEn = document.getElementById('visitCountEn');
     
     if (visitCountZh) {
-        visitCountZh.textContent = visitCount.toLocaleString();
+        visitCountZh.textContent = '已记录';
     }
     if (visitCountEn) {
-        visitCountEn.textContent = visitCount.toLocaleString();
+        visitCountEn.textContent = 'Recorded';
+    }
+    
+    // 显示提示信息
+    setTimeout(() => {
+        if (visitCountZh) {
+            visitCountZh.textContent = 'GA统计中';
+        }
+        if (visitCountEn) {
+            visitCountEn.textContent = 'GA Tracking';
+        }
+    }, 1000);
+}
+
+// 获取Google Analytics真实数据（需要GA4 Reporting API）
+async function getRealAnalyticsData() {
+    try {
+        // 注意：这需要GA4 Reporting API和认证
+        // 这里提供实现思路，实际需要后端支持
+        const response = await fetch('/api/analytics-data');
+        const data = await response.json();
+        return data.totalUsers;
+    } catch (error) {
+        console.log('无法获取GA数据，使用模拟数据');
+        return null;
     }
 }
 
