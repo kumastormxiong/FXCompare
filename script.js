@@ -705,7 +705,7 @@ function refreshRates() {
 }
 
 // 截图与分享功能
-async function capturePanels(canvasOptions = { backgroundColor: null, scale: window.devicePixelRatio || 2 }) {
+async function capturePanels(canvasOptions = { backgroundColor: getComputedStyle(document.body).getPropertyValue('--primary-bg') || '#0c0c0c', scale: Math.min(2, window.devicePixelRatio || 1.5), useCORS: true, allowTaint: false }) {
     const lang = document.body.getAttribute('data-lang') || 'en';
     // 构建一个只用于导出的临时容器，包含左、右、底部三个区域
     const temp = document.createElement('div');
@@ -772,27 +772,7 @@ async function capturePanelsAndDownload() {
 }
 
 async function capturePanelsAndCopy() {
-    try {
-        const canvas = await capturePanels();
-        canvas.toBlob(async (blob) => {
-            try {
-                await navigator.clipboard.write([
-                    new ClipboardItem({ 'image/png': blob })
-                ]);
-                fxCompare && fxCompare.showToast('图片已复制到剪贴板', 'success');
-            } catch (err) {
-                fxCompare && fxCompare.showToast('复制失败，已自动下载图片', 'warning');
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `FXCompare_${Date.now()}.png`;
-                a.click();
-                URL.revokeObjectURL(url);
-            }
-        }, 'image/png');
-    } catch (e) {
-        fxCompare && fxCompare.showToast('复制失败，请重试', 'error');
-    }
+    // 此功能已下线，根据产品要求移除按钮，不再提供实现
 }
 
 async function shareToX() {
@@ -906,6 +886,12 @@ function updatePageLanguage(lang) {
     if (refreshBtn) {
         refreshBtn.title = lang === 'en' ? 'Refresh Rates' : '刷新汇率';
     }
+    // 分享图标 title
+    document.querySelectorAll('.share-icon-btn').forEach(btn => {
+        const zh = btn.getAttribute('data-zh-title');
+        const en = btn.getAttribute('data-en-title');
+        btn.title = lang === 'en' ? (en || '') : (zh || '');
+    });
     
     // 重新渲染所有货币选择器以更新语言
     if (fxCompare) {
