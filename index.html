@@ -53,6 +53,29 @@
                     </div>
                 </div>
             </div>
+            <!-- Share/Export Toolbar -->
+            <div class="share-toolbar">
+                <button class="share-btn" onclick="capturePanelsAndDownload()" title="导出图片" data-zh-title="导出图片" data-en-title="Export Image">
+                    <i class="fas fa-download"></i>
+                    <span class="zh-text">导出图片</span>
+                    <span class="en-text">Export Image</span>
+                </button>
+                <button class="share-btn" onclick="capturePanelsAndCopy()" title="复制图片" data-zh-title="复制图片" data-en-title="Copy Image">
+                    <i class="fas fa-copy"></i>
+                    <span class="zh-text">复制图片</span>
+                    <span class="en-text">Copy Image</span>
+                </button>
+                <button class="share-btn" onclick="shareToX()" title="分享到X" data-zh-title="分享到X" data-en-title="Share to X">
+                    <i class="fab fa-x-twitter"></i>
+                    <span class="zh-text">分享到X</span>
+                    <span class="en-text">Share to X</span>
+                </button>
+                <button class="share-btn" onclick="shareToInstagram()" title="分享到Instagram" data-zh-title="分享到Instagram" data-en-title="Share to Instagram">
+                    <i class="fab fa-instagram"></i>
+                    <span class="zh-text">分享到Instagram</span>
+                    <span class="en-text">Share to Instagram</span>
+                </button>
+            </div>
             <div class="function-description">
                 <div class="description-content">
                     <h3 class="zh-text"><i class="fas fa-info-circle"></i> 功能说明</h3>
@@ -189,5 +212,7 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script src="script.js"></script>
+    <!-- html2canvas for capture -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </body>
 </html>

@@ -704,6 +704,144 @@ function refreshRates() {
     fxCompare.loadExchangeRates();
 }
 
+// 截图与分享功能
+async function capturePanels(canvasOptions = { backgroundColor: null, scale: window.devicePixelRatio || 2 }) {
+    const lang = document.body.getAttribute('data-lang') || 'en';
+    // 构建一个只用于导出的临时容器，包含左、右、底部三个区域
+    const temp = document.createElement('div');
+    temp.style.position = 'fixed';
+    temp.style.left = '-99999px';
+    temp.style.top = '0';
+    temp.style.width = document.querySelector('.container').offsetWidth + 'px';
+    temp.style.padding = '20px';
+    temp.style.background = getComputedStyle(document.body).getPropertyValue('--primary-bg') || '#0c0c0c';
+    temp.style.color = getComputedStyle(document.body).getPropertyValue('--primary-text') || '#ffffff';
+    temp.style.fontFamily = getComputedStyle(document.body).fontFamily;
+
+    // 顶部Logo条
+    const logoBar = document.createElement('div');
+    logoBar.style.display = 'flex';
+    logoBar.style.alignItems = 'center';
+    logoBar.style.justifyContent = 'space-between';
+    logoBar.style.marginBottom = '16px';
+    const title = document.createElement('div');
+    title.style.fontWeight = '700';
+    title.style.fontSize = '20px';
+    title.textContent = 'FXCompare';
+    const slogan = document.createElement('div');
+    slogan.style.fontSize = '12px';
+    slogan.style.opacity = '0.85';
+    slogan.textContent = lang === 'en' ? 'Exchange Rate Comparison' : '汇率对比';
+    logoBar.appendChild(title);
+    logoBar.appendChild(slogan);
+    temp.appendChild(logoBar);
+
+    // 复制主内容三部分
+    const left = document.querySelector('.left-panel').cloneNode(true);
+    const right = document.querySelector('.right-panel').cloneNode(true);
+    const bottom = document.querySelector('.bottom-panel').cloneNode(true);
+    const grid = document.createElement('div');
+    grid.style.display = 'grid';
+    grid.style.gridTemplateColumns = '1fr 1fr';
+    grid.style.gap = '20px';
+    grid.appendChild(left);
+    grid.appendChild(right);
+    temp.appendChild(grid);
+    temp.appendChild(bottom);
+
+    document.body.appendChild(temp);
+
+    // 使用 html2canvas 生成图片
+    const canvas = await html2canvas(temp, canvasOptions);
+    document.body.removeChild(temp);
+    return canvas;
+}
+
+async function capturePanelsAndDownload() {
+    try {
+        const canvas = await capturePanels();
+        const dataURL = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = dataURL;
+        a.download = `FXCompare_${Date.now()}.png`;
+        a.click();
+        fxCompare && fxCompare.showToast('图片已下载', 'success');
+    } catch (e) {
+        fxCompare && fxCompare.showToast('导出失败，请重试', 'error');
+    }
+}
+
+async function capturePanelsAndCopy() {
+    try {
+        const canvas = await capturePanels();
+        canvas.toBlob(async (blob) => {
+            try {
+                await navigator.clipboard.write([
+                    new ClipboardItem({ 'image/png': blob })
+                ]);
+                fxCompare && fxCompare.showToast('图片已复制到剪贴板', 'success');
+            } catch (err) {
+                fxCompare && fxCompare.showToast('复制失败，已自动下载图片', 'warning');
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `FXCompare_${Date.now()}.png`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        }, 'image/png');
+    } catch (e) {
+        fxCompare && fxCompare.showToast('复制失败，请重试', 'error');
+    }
+}
+
+async function shareToX() {
+    try {
+        const canvas = await capturePanels();
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        const file = new File([blob], `FXCompare_${Date.now()}.png`, { type: 'image/png' });
+        const shareData = {
+            files: [file],
+            title: 'FXCompare',
+            text: 'FXCompare - Exchange Rate Comparison'
+        };
+        if (navigator.canShare && navigator.canShare(shareData)) {
+            await navigator.share(shareData);
+            fxCompare && fxCompare.showToast('已通过系统分享', 'success');
+            return;
+        }
+    } catch (e) {
+        // 忽略，降级到意图页
+    }
+    // 回退：打开X推文意图页（无法直接带图，提示用户手动上传）
+    const text = encodeURIComponent('FXCompare - Exchange Rate Comparison');
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+}
+
+async function shareToInstagram() {
+    try {
+        const canvas = await capturePanels();
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        const file = new File([blob], `FXCompare_${Date.now()}.png`, { type: 'image/png' });
+        const shareData = {
+            files: [file],
+            title: 'FXCompare',
+            text: 'FXCompare - Exchange Rate Comparison'
+        };
+        if (navigator.canShare && navigator.canShare(shareData)) {
+            await navigator.share(shareData);
+            fxCompare && fxCompare.showToast('已通过系统分享', 'success');
+            return;
+        }
+    } catch (e) {
+        // 忽略，降级
+    }
+    // 回退说明：在网页版 Instagram 不支持直接带图分享，提示下载后手动发布
+    fxCompare && fxCompare.showToast('Instagram 网页端不支持直传，已为你下载图片', 'warning');
+    capturePanelsAndDownload();
+}
+
 // 主题和语言切换功能
 function toggleTheme() {
     const body = document.body;

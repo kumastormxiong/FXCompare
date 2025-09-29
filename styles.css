@@ -90,6 +90,38 @@ body {
     opacity: 0.8;
 }
 
+/* Share Toolbar */
+.share-toolbar {
+    display: flex;
+    gap: 10px;
+    padding: 12px 20px 0 20px;
+    flex-wrap: wrap;
+}
+
+.share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--border-color);
+    background: var(--gradient-button);
+    color: #fff;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-light);
+}
+
+.share-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-glow);
+    background: var(--gradient-button-hover);
+}
+
+.share-btn i {
+    font-size: 0.95rem;
+}
+
 .header-content {
     display: flex;
     justify-content: space-between;
