@@ -892,6 +892,16 @@ function updatePageLanguage(lang) {
         const en = btn.getAttribute('data-en-title');
         btn.title = lang === 'en' ? (en || '') : (zh || '');
     });
+
+    // SEO: 默认英文时，避免中文文本被抓取为摘要
+    const zhNodes = document.querySelectorAll('.zh-text');
+    zhNodes.forEach(node => {
+        if (lang === 'en') {
+            node.setAttribute('data-nosnippet', 'true');
+        } else {
+            node.removeAttribute('data-nosnippet');
+        }
+    });
     
     // 重新渲染所有货币选择器以更新语言
     if (fxCompare) {
@@ -920,11 +930,15 @@ function initializeThemeAndLanguage() {
         themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
     }
     
-    // 初始化语言
+    // 初始化语言（支持 URL 参数覆盖）
+    const params = new URLSearchParams(window.location.search);
+    const queryLang = params.get('lang');
     const savedLang = localStorage.getItem('language') || 'en';
-    document.body.setAttribute('data-lang', savedLang);
+    const initialLang = (queryLang === 'zh' || queryLang === 'en') ? queryLang : savedLang;
+    document.body.setAttribute('data-lang', initialLang);
+    localStorage.setItem('language', initialLang);
     // 语言初始化完成
-    updatePageLanguage(savedLang);
+    updatePageLanguage(initialLang);
 }
 
 // Google Analytics事件发送
