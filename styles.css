@@ -137,10 +137,17 @@ body {
     gap: 12px;
 }
 .site-logo {
-    width: 36px;
-    height: 36px;
+    width: 48px;
+    height: 48px;
     border-radius: 8px;
     box-shadow: var(--shadow-light);
+    object-fit: contain;
+    transition: var(--transition);
+}
+
+.site-logo:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-glow);
 }
 
 .logo i {
@@ -601,6 +608,11 @@ body {
 @media (max-width: 1024px) {
     .container {
         padding: 0 15px;
+    }
+    
+    .site-logo {
+        width: 44px;
+        height: 44px;
     }
     
     .main-content {
@@ -1243,6 +1255,11 @@ body {
         font-size: 1.5rem;
     }
     
+    .site-logo {
+        width: 40px;
+        height: 40px;
+    }
+    
     .currency-input-item {
         grid-template-columns: 1fr;
         gap: 10px;
@@ -1266,6 +1283,15 @@ body {
 @media (max-width: 480px) {
     .container {
         padding: 0 10px;
+    }
+    
+    .site-logo {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .logo h1 {
+        font-size: 1.2rem;
     }
     
     .panel-header {
