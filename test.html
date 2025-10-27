@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FXCompare Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #0c0c0c;
+            color: #fff;
+        }
+        .test-button {
+            background: #00d4ff;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .test-button:hover {
+            background: #00b8e6;
+        }
+    </style>
+</head>
+<body>
+    <h1>FXCompare 功能测试</h1>
+    
+    <h2>Canvas 绘制测试</h2>
+    <button class="test-button" onclick="testCanvas()">测试Canvas绘制</button>
+    <button class="test-button" onclick="testSimplifiedCanvas()">测试简化Canvas绘制</button>
+    <div id="canvasContainer"></div>
+    
+    <h2>分享功能测试</h2>
+    <button class="test-button" onclick="testShare()">测试Web Share API</button>
+    
+    <script>
+        function testCanvas() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = 400;
+            canvas.height = 300;
+            
+            // 背景
+            ctx.fillStyle = '#0c0c0c';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 文字
+            ctx.fillStyle = '#00d4ff';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('FXCompare Test', canvas.width / 2, 50);
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '16px Arial';
+            ctx.fillText('Canvas绘制功能正常', canvas.width / 2, 100);
+            
+            ctx.fillText('时间: ' + new Date().toLocaleString(), canvas.width / 2, 150);
+            
+            // 显示在页面上
+            const container = document.getElementById('canvasContainer');
+            container.innerHTML = '';
+            container.appendChild(canvas);
+            
+            // 下载测试
+            const dataURL = canvas.toDataURL('image/png');
+            const a = document.createElement('a');
+            a.href = dataURL;
+            a.download = 'test_canvas.png';
+            a.click();
+            
+            alert('Canvas测试完成！图片已下载');
+        }
+        
+        function testSimplifiedCanvas() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = 400;
+            canvas.height = 300;
+            
+            // 背景
+            ctx.fillStyle = '#0c0c0c';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 标题
+            ctx.fillStyle = '#00d4ff';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('FXCompare', canvas.width / 2, 50);
+            
+            // 副标题
+            ctx.fillStyle = '#b8b8b8';
+            ctx.font = '16px Arial';
+            ctx.fillText('Exchange Rate Comparison', canvas.width / 2, 80);
+            
+            // 时间戳
+            ctx.fillStyle = '#888';
+            ctx.font = '12px Arial';
+            ctx.fillText(new Date().toLocaleString(), canvas.width / 2, 100);
+            
+            // 模拟源货币面板
+            ctx.fillStyle = 'rgba(42, 42, 42, 0.8)';
+            ctx.fillRect(20, 130, 170, 100);
+            ctx.strokeStyle = '#333';
+            ctx.strokeRect(20, 130, 170, 100);
+            
+            ctx.fillStyle = '#00d4ff';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Source Currencies', 30, 150);
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '12px Arial';
+            ctx.fillText('USD US Dollar: 1000.00', 30, 170);
+            ctx.fillText('EUR Euro: 850.00', 30, 190);
+            
+            // 模拟目标货币面板
+            ctx.fillStyle = 'rgba(42, 42, 42, 0.8)';
+            ctx.fillRect(210, 130, 170, 100);
+            ctx.strokeStyle = '#333';
+            ctx.strokeRect(210, 130, 170, 100);
+            
+            ctx.fillStyle = '#00d4ff';
+            ctx.font = 'bold 14px Arial';
+            ctx.fillText('Target Currencies', 220, 150);
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '12px Arial';
+            ctx.fillText('CNY Chinese Yuan: 7200.00', 220, 170);
+            ctx.fillText('JPY Japanese Yen: 150000.00', 220, 190);
+            
+            // 模拟顶置汇总面板
+            ctx.fillStyle = 'rgba(42, 42, 42, 0.8)';
+            ctx.fillRect(20, 250, 360, 40);
+            ctx.strokeStyle = '#333';
+            ctx.strokeRect(20, 250, 360, 40);
+            
+            ctx.fillStyle = '#00d4ff';
+            ctx.font = 'bold 14px Arial';
+            ctx.fillText('Pinned Summary', 30, 270);
+            
+            ctx.fillStyle = '#fff';
+            ctx.font = '12px Arial';
+            ctx.fillText('USD: 1000.00 | EUR: 850.00', 30, 285);
+            
+            // 显示在页面上
+            const container = document.getElementById('canvasContainer');
+            container.innerHTML = '';
+            container.appendChild(canvas);
+            
+            // 下载测试
+            const dataURL = canvas.toDataURL('image/png');
+            const a = document.createElement('a');
+            a.href = dataURL;
+            a.download = 'test_simplified_canvas.png';
+            a.click();
+            
+            alert('简化Canvas测试完成！图片已下载');
+        }
+        
+        async function testShare() {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'FXCompare Test',
+                        text: '测试Web Share API功能',
+                        url: window.location.href
+                    });
+                    alert('分享成功！');
+                } catch (error) {
+                    alert('分享失败: ' + error.message);
+                }
+            } else {
+                alert('当前浏览器不支持Web Share API');
+            }
+        }
+    </script>
+</body>
+</html>
