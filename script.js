@@ -903,9 +903,11 @@ class FXCompare {
         // 重新更新显示
         this.updateSummaryResults();
         
-        // 显示提示
+        // 显示提示（多语言支持）
+        const currentLang = document.body.getAttribute('data-lang') || 'en';
+        const i18n = getI18nTexts(currentLang);
         const isPinned = this.pinnedCurrencies.includes(currencyCode);
-        const message = isPinned ? `已顶置 ${currencyCode}` : `已取消顶置 ${currencyCode}`;
+        const message = isPinned ? `${i18n.currencyPinned} ${currencyCode}` : `${i18n.currencyUnpinned} ${currencyCode}`;
         this.showToast(message, 'success');
     }
     
@@ -1305,9 +1307,9 @@ async function createImageCanvas() {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     
-    // 设置画布尺寸（长条形，适合手机分享）
-    canvas.width = 1200;  // 减少宽度
-    canvas.height = 800;  // 固定高度，适合手机屏幕比例
+    // 设置画布尺寸（动态高度）
+    canvas.width = 1600;
+    canvas.height = totalHeight;
     
     // 背景渐变
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
@@ -1393,21 +1395,22 @@ async function createImageCanvas() {
     
     const titles = panelTitles[lang] || panelTitles.en;
     
-    // 计算面板位置（垂直布局，适合长条形）
-    const panelStartY = 120; // 标题下方开始
+    // 计算面板位置
+    const panelStartY = baseHeight + panelSpacing;
     const availableWidth = canvas.width - (edgeMargin * 2); // 可用宽度
-    const panelHeight = 120; // 固定面板高度，适合长条形
+    const panelSpacingX = 60; // 面板间距（减少）
+    const panelWidth = Math.floor((availableWidth - panelSpacingX) / 2); // 平均分配宽度
     
-    // 绘制源货币面板（水平布局）
-    drawCurrencyPanel(ctx, sourceCurrencies, edgeMargin, panelStartY, availableWidth, panelHeight, titles.source, lang);
+    // 绘制源货币面板（动态高度）
+    drawCurrencyPanel(ctx, sourceCurrencies, edgeMargin, panelStartY, panelWidth, sourceHeight, titles.source, lang);
     
-    // 绘制目标货币面板（水平布局）
-    const targetY = panelStartY + panelHeight + 20; // 垂直间距
-    drawCurrencyPanel(ctx, targetCurrencies, edgeMargin, targetY, availableWidth, panelHeight, titles.target, lang);
+    // 绘制目标货币面板（动态高度）
+    drawCurrencyPanel(ctx, targetCurrencies, edgeMargin + panelWidth + panelSpacingX, panelStartY, panelWidth, targetHeight, titles.target, lang);
     
-    // 绘制顶置汇总面板（水平布局）
-    const summaryY = targetY + panelHeight + 20; // 垂直间距
-    drawSummaryPanel(ctx, pinnedSummary, edgeMargin, summaryY, availableWidth, panelHeight, titles.summary, lang);
+    // 绘制顶置汇总面板（动态高度，全宽）
+    const summaryY = panelStartY + Math.max(sourceHeight, targetHeight) + panelSpacing;
+    const summaryWidth = availableWidth; // 使用可用宽度
+    drawSummaryPanel(ctx, pinnedSummary, edgeMargin, summaryY, summaryWidth, summaryHeight, titles.summary, lang);
     
     return canvas;
 }
@@ -1440,13 +1443,12 @@ function drawCurrencyPanel(ctx, currencies, x, y, width, height, title, lang) {
     ctx.textAlign = 'left';
     ctx.fillText(title, adjustedX + 30, adjustedY + 50);
     
-    // 内容（水平布局，适合长条形）
-    ctx.font = '20px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
+    // 内容（2倍分辨率）
+    ctx.font = '24px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
     ctx.fillStyle = '#ffffff';
     
-    const contentY = adjustedY + 80;
-    const itemHeight = 25; // 每个货币项的高度
-    const maxItemsPerRow = Math.floor(adjustedWidth / 200); // 根据宽度计算每行显示的项目数
+    let lineY = adjustedY + 90;
+    const maxLines = Math.floor((adjustedHeight - 90) / 32); // 计算最大行数
     
     if (currencies.length === 0) {
         const noDataTexts = {
@@ -1460,20 +1462,19 @@ function drawCurrencyPanel(ctx, currencies, x, y, width, height, title, lang) {
             ru: 'Валюты не выбраны'
         };
         const noDataText = noDataTexts[lang] || noDataTexts.en;
-        ctx.fillText(noDataText, adjustedX + 30, contentY);
+        ctx.fillText(noDataText, adjustedX + 30, lineY);
     } else {
-        // 水平排列货币项
-        currencies.forEach((currency, index) => {
-            const row = Math.floor(index / maxItemsPerRow);
-            const col = index % maxItemsPerRow;
-            const x = adjustedX + 30 + (col * 200);
-            const y = contentY + (row * itemHeight);
-            
-            if (y < adjustedY + adjustedHeight - 20) { // 确保不超出面板
-                const text = `${currency.code}: ${currency.amount.toFixed(2)}`;
-                ctx.fillText(text, x, y);
-            }
+        const displayCurrencies = currencies.slice(0, maxLines); // 限制显示数量
+        displayCurrencies.forEach(currency => {
+            const text = `${currency.code} ${currency.name}: ${currency.amount.toFixed(2)}`;
+            ctx.fillText(text, adjustedX + 30, lineY);
+            lineY += 32;
         });
+        
+        // 如果货币数量超过显示限制，显示省略号
+        if (currencies.length > maxLines) {
+            ctx.fillText('...', adjustedX + 30, lineY);
+        }
     }
 }
 
@@ -1505,13 +1506,12 @@ function drawSummaryPanel(ctx, summary, x, y, width, height, title, lang) {
     ctx.textAlign = 'left';
     ctx.fillText(title, adjustedX + 30, adjustedY + 50);
     
-    // 内容（水平布局，适合长条形）
-    ctx.font = '20px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
+    // 内容（2倍分辨率）
+    ctx.font = '24px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
     ctx.fillStyle = '#ffffff';
     
-    const contentY = adjustedY + 80;
-    const itemHeight = 25; // 每个汇总项的高度
-    const maxItemsPerRow = Math.floor(adjustedWidth / 200); // 根据宽度计算每行显示的项目数
+    let lineY = adjustedY + 90;
+    const maxLines = Math.floor((adjustedHeight - 90) / 32); // 计算最大行数
     
     if (summary.length === 0) {
         const noDataTexts = {
@@ -1525,20 +1525,19 @@ function drawSummaryPanel(ctx, summary, x, y, width, height, title, lang) {
             ru: 'Нет закрепленных валют'
         };
         const noDataText = noDataTexts[lang] || noDataTexts.en;
-        ctx.fillText(noDataText, adjustedX + 30, contentY);
+        ctx.fillText(noDataText, adjustedX + 30, lineY);
     } else {
-        // 水平排列汇总项
-        summary.forEach((item, index) => {
-            const row = Math.floor(index / maxItemsPerRow);
-            const col = index % maxItemsPerRow;
-            const x = adjustedX + 30 + (col * 200);
-            const y = contentY + (row * itemHeight);
-            
-            if (y < adjustedY + adjustedHeight - 20) { // 确保不超出面板
-                const text = `${item.code}: ${item.amount.toFixed(2)}`;
-                ctx.fillText(text, x, y);
-            }
+        const displaySummary = summary.slice(0, maxLines); // 限制显示数量
+        displaySummary.forEach(item => {
+            const text = `${item.code} ${item.name}: ${item.amount.toFixed(2)}`;
+            ctx.fillText(text, adjustedX + 30, lineY);
+            lineY += 32;
         });
+        
+        // 如果汇总数量超过显示限制，显示省略号
+        if (summary.length > maxLines) {
+            ctx.fillText('...', adjustedX + 30, lineY);
+        }
     }
 }
 
@@ -2256,56 +2255,72 @@ function getI18nTexts(lang) {
         convertedAmount: 'Converted Amount', 
         noResults: 'Please select currencies and enter amounts to view conversion results',
         switchedToDarkTheme: 'Switched to dark theme',
-        switchedToLightTheme: 'Switched to light theme'
+        switchedToLightTheme: 'Switched to light theme',
+        currencyPinned: 'Pinned',
+        currencyUnpinned: 'Unpinned'
     });
     Object.assign(dict.zh, { 
         enterAmount: '输入金额', 
         convertedAmount: '转换金额', 
         noResults: '请选择货币并输入金额以查看转换结果',
         switchedToDarkTheme: '已切换到暗色主题',
-        switchedToLightTheme: '已切换到亮色主题'
+        switchedToLightTheme: '已切换到亮色主题',
+        currencyPinned: '已顶置',
+        currencyUnpinned: '已取消顶置'
     });
     Object.assign(dict.fr, { 
         enterAmount: 'Saisir le montant', 
         convertedAmount: 'Montant converti', 
         noResults: 'Veuillez sélectionner des devises et saisir des montants pour voir les résultats',
         switchedToDarkTheme: 'Passé au thème sombre',
-        switchedToLightTheme: 'Passé au thème clair'
+        switchedToLightTheme: 'Passé au thème clair',
+        currencyPinned: 'Épinglé',
+        currencyUnpinned: 'Désépinglé'
     });
     Object.assign(dict.es, { 
         enterAmount: 'Introducir monto', 
         convertedAmount: 'Importe convertido', 
         noResults: 'Seleccione monedas e ingrese montos para ver resultados',
         switchedToDarkTheme: 'Cambiado al tema oscuro',
-        switchedToLightTheme: 'Cambiado al tema claro'
+        switchedToLightTheme: 'Cambiado al tema claro',
+        currencyPinned: 'Fijado',
+        currencyUnpinned: 'Desfijado'
     });
     Object.assign(dict.ja, { 
         enterAmount: '金額を入力', 
         convertedAmount: '換算額', 
         noResults: '通貨を選択し金額を入力して結果を表示',
         switchedToDarkTheme: 'ダークテーマに切り替えました',
-        switchedToLightTheme: 'ライトテーマに切り替えました'
+        switchedToLightTheme: 'ライトテーマに切り替えました',
+        currencyPinned: 'ピン留めしました',
+        currencyUnpinned: 'ピン留めを解除しました'
     });
     Object.assign(dict.de, { 
         enterAmount: 'Betrag eingeben', 
         convertedAmount: 'Umgerechneter Betrag', 
         noResults: 'Bitte Währungen wählen und Beträge eingeben, um Ergebnisse zu sehen',
         switchedToDarkTheme: 'Zu dunklem Theme gewechselt',
-        switchedToLightTheme: 'Zu hellem Theme gewechselt'
+        switchedToLightTheme: 'Zu hellem Theme gewechselt',
+        currencyPinned: 'Angeheftet',
+        currencyUnpinned: 'Abgeheftet'
     });
     Object.assign(dict.ko, { 
         enterAmount: '금액 입력', 
         convertedAmount: '변환 금액', 
         noResults: '통화를 선택하고 금액을 입력하여 결과 보기',
         switchedToDarkTheme: '다크 테마로 전환되었습니다',
-        switchedToLightTheme: '라이트 테마로 전환되었습니다'
+        switchedToLightTheme: '라이트 테마로 전환되었습니다',
+        currencyPinned: '고정됨',
+        currencyUnpinned: '고정 해제됨'
     });
     Object.assign(dict.ru, { 
         enterAmount: 'Введите сумму', 
         convertedAmount: 'Конвертированная сумма', 
         noResults: 'Выберите валюты и введите суммы для просмотра результатов',
         switchedToDarkTheme: 'Переключено на темную тему',
-        switchedToLightTheme: 'Переключено на светлую тему'
+        switchedToLightTheme: 'Переключено на светлую тему',
+        currencyPinned: 'Закреплено',
+        currencyUnpinned: 'Откреплено'
     });
     return dict[lang] || dict.en;
 }
