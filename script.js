@@ -1305,9 +1305,9 @@ async function createImageCanvas() {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     
-    // 设置画布尺寸（动态高度）
-    canvas.width = 1600;
-    canvas.height = totalHeight;
+    // 设置画布尺寸（长条形，适合手机分享）
+    canvas.width = 1200;  // 减少宽度
+    canvas.height = 800;  // 固定高度，适合手机屏幕比例
     
     // 背景渐变
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
@@ -1393,22 +1393,21 @@ async function createImageCanvas() {
     
     const titles = panelTitles[lang] || panelTitles.en;
     
-    // 计算面板位置
-    const panelStartY = baseHeight + panelSpacing;
+    // 计算面板位置（垂直布局，适合长条形）
+    const panelStartY = 120; // 标题下方开始
     const availableWidth = canvas.width - (edgeMargin * 2); // 可用宽度
-    const panelSpacingX = 60; // 面板间距（减少）
-    const panelWidth = Math.floor((availableWidth - panelSpacingX) / 2); // 平均分配宽度
+    const panelHeight = 120; // 固定面板高度，适合长条形
     
-    // 绘制源货币面板（动态高度）
-    drawCurrencyPanel(ctx, sourceCurrencies, edgeMargin, panelStartY, panelWidth, sourceHeight, titles.source, lang);
+    // 绘制源货币面板（水平布局）
+    drawCurrencyPanel(ctx, sourceCurrencies, edgeMargin, panelStartY, availableWidth, panelHeight, titles.source, lang);
     
-    // 绘制目标货币面板（动态高度）
-    drawCurrencyPanel(ctx, targetCurrencies, edgeMargin + panelWidth + panelSpacingX, panelStartY, panelWidth, targetHeight, titles.target, lang);
+    // 绘制目标货币面板（水平布局）
+    const targetY = panelStartY + panelHeight + 20; // 垂直间距
+    drawCurrencyPanel(ctx, targetCurrencies, edgeMargin, targetY, availableWidth, panelHeight, titles.target, lang);
     
-    // 绘制顶置汇总面板（动态高度，全宽）
-    const summaryY = panelStartY + Math.max(sourceHeight, targetHeight) + panelSpacing;
-    const summaryWidth = availableWidth; // 使用可用宽度
-    drawSummaryPanel(ctx, pinnedSummary, edgeMargin, summaryY, summaryWidth, summaryHeight, titles.summary, lang);
+    // 绘制顶置汇总面板（水平布局）
+    const summaryY = targetY + panelHeight + 20; // 垂直间距
+    drawSummaryPanel(ctx, pinnedSummary, edgeMargin, summaryY, availableWidth, panelHeight, titles.summary, lang);
     
     return canvas;
 }
@@ -1441,12 +1440,13 @@ function drawCurrencyPanel(ctx, currencies, x, y, width, height, title, lang) {
     ctx.textAlign = 'left';
     ctx.fillText(title, adjustedX + 30, adjustedY + 50);
     
-    // 内容（2倍分辨率）
-    ctx.font = '24px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
+    // 内容（水平布局，适合长条形）
+    ctx.font = '20px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
     ctx.fillStyle = '#ffffff';
     
-    let lineY = adjustedY + 90;
-    const maxLines = Math.floor((adjustedHeight - 90) / 32); // 计算最大行数
+    const contentY = adjustedY + 80;
+    const itemHeight = 25; // 每个货币项的高度
+    const maxItemsPerRow = Math.floor(adjustedWidth / 200); // 根据宽度计算每行显示的项目数
     
     if (currencies.length === 0) {
         const noDataTexts = {
@@ -1460,19 +1460,20 @@ function drawCurrencyPanel(ctx, currencies, x, y, width, height, title, lang) {
             ru: 'Валюты не выбраны'
         };
         const noDataText = noDataTexts[lang] || noDataTexts.en;
-        ctx.fillText(noDataText, adjustedX + 30, lineY);
+        ctx.fillText(noDataText, adjustedX + 30, contentY);
     } else {
-        const displayCurrencies = currencies.slice(0, maxLines); // 限制显示数量
-        displayCurrencies.forEach(currency => {
-            const text = `${currency.code} ${currency.name}: ${currency.amount.toFixed(2)}`;
-            ctx.fillText(text, adjustedX + 30, lineY);
-            lineY += 32;
+        // 水平排列货币项
+        currencies.forEach((currency, index) => {
+            const row = Math.floor(index / maxItemsPerRow);
+            const col = index % maxItemsPerRow;
+            const x = adjustedX + 30 + (col * 200);
+            const y = contentY + (row * itemHeight);
+            
+            if (y < adjustedY + adjustedHeight - 20) { // 确保不超出面板
+                const text = `${currency.code}: ${currency.amount.toFixed(2)}`;
+                ctx.fillText(text, x, y);
+            }
         });
-        
-        // 如果货币数量超过显示限制，显示省略号
-        if (currencies.length > maxLines) {
-            ctx.fillText('...', adjustedX + 30, lineY);
-        }
     }
 }
 
@@ -1504,12 +1505,13 @@ function drawSummaryPanel(ctx, summary, x, y, width, height, title, lang) {
     ctx.textAlign = 'left';
     ctx.fillText(title, adjustedX + 30, adjustedY + 50);
     
-    // 内容（2倍分辨率）
-    ctx.font = '24px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
+    // 内容（水平布局，适合长条形）
+    ctx.font = '20px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
     ctx.fillStyle = '#ffffff';
     
-    let lineY = adjustedY + 90;
-    const maxLines = Math.floor((adjustedHeight - 90) / 32); // 计算最大行数
+    const contentY = adjustedY + 80;
+    const itemHeight = 25; // 每个汇总项的高度
+    const maxItemsPerRow = Math.floor(adjustedWidth / 200); // 根据宽度计算每行显示的项目数
     
     if (summary.length === 0) {
         const noDataTexts = {
@@ -1523,19 +1525,20 @@ function drawSummaryPanel(ctx, summary, x, y, width, height, title, lang) {
             ru: 'Нет закрепленных валют'
         };
         const noDataText = noDataTexts[lang] || noDataTexts.en;
-        ctx.fillText(noDataText, adjustedX + 30, lineY);
+        ctx.fillText(noDataText, adjustedX + 30, contentY);
     } else {
-        const displaySummary = summary.slice(0, maxLines); // 限制显示数量
-        displaySummary.forEach(item => {
-            const text = `${item.code} ${item.name}: ${item.amount.toFixed(2)}`;
-            ctx.fillText(text, adjustedX + 30, lineY);
-            lineY += 32;
+        // 水平排列汇总项
+        summary.forEach((item, index) => {
+            const row = Math.floor(index / maxItemsPerRow);
+            const col = index % maxItemsPerRow;
+            const x = adjustedX + 30 + (col * 200);
+            const y = contentY + (row * itemHeight);
+            
+            if (y < adjustedY + adjustedHeight - 20) { // 确保不超出面板
+                const text = `${item.code}: ${item.amount.toFixed(2)}`;
+                ctx.fillText(text, x, y);
+            }
         });
-        
-        // 如果汇总数量超过显示限制，显示省略号
-        if (summary.length > maxLines) {
-            ctx.fillText('...', adjustedX + 30, lineY);
-        }
     }
 }
 
