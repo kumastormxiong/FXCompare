@@ -659,7 +659,7 @@ class FXCompare {
             <div class="currency-select">
                 <select onchange="fxCompare.updateTargetCurrency('${targetCurrencyInput.id}', this.value)">
                     ${currencyList.map(currency => {
-                        const displayName = currentLang === 'zh' ? currency.name : (currency.nameEn || currency.name);
+                        const displayName = this.getCurrencyName(currency, currentLang);
                         return `<option value="${currency.code}" ${currency.code === targetCurrencyInput.currency ? 'selected' : ''}>
                             ${currency.flag} ${currency.code} - ${displayName}
                         </option>`;
@@ -2003,12 +2003,8 @@ function toggleTheme() {
     
     // 显示提示
     const currentLang = document.body.getAttribute('data-lang') || 'zh';
-    let message;
-    if (currentLang === 'en') {
-        message = newTheme === 'dark' ? 'Switched to dark theme' : 'Switched to light theme';
-    } else {
-        message = newTheme === 'dark' ? '已切换到暗色主题' : '已切换到亮色主题';
-    }
+    const i18n = getI18nTexts(currentLang);
+    const message = newTheme === 'dark' ? i18n.switchedToDarkTheme : i18n.switchedToLightTheme;
     if (fxCompare) {
         fxCompare.showToast(message, 'success');
     }
@@ -2030,11 +2026,17 @@ function updatePageLanguage(lang) {
     if (themeBtn) themeBtn.title = i18n.toggleTheme;
     if (langBtn) langBtn.title = i18n.toggleLanguage;
     if (refreshBtn) refreshBtn.title = i18n.refreshRates;
-    // 分享图标 title
+    // 分享图标 title - 支持所有语言
     document.querySelectorAll('.share-icon-btn').forEach(btn => {
-        const zh = btn.getAttribute('data-zh-title');
-        const en = btn.getAttribute('data-en-title');
-        btn.title = lang === 'en' ? (en || '') : (zh || '');
+        const titleAttr = `data-${lang}-title`;
+        const title = btn.getAttribute(titleAttr);
+        if (title) {
+            btn.title = title;
+        } else {
+            // 如果当前语言没有对应的title，回退到英文
+            const enTitle = btn.getAttribute('data-en-title');
+            btn.title = enTitle || '';
+        }
     });
 
     // SEO: 非中文语言时隐藏中文摘要抓取
@@ -2246,14 +2248,62 @@ function getI18nTexts(lang) {
         }
     };
     // 通用字段：输入占位与目标金额占位
-    Object.assign(dict.en, { enterAmount: 'Enter amount', convertedAmount: 'Converted Amount', noResults: 'Please select currencies and enter amounts to view conversion results' });
-    Object.assign(dict.zh, { enterAmount: '输入金额', convertedAmount: '转换金额', noResults: '请选择货币并输入金额以查看转换结果' });
-    Object.assign(dict.fr, { enterAmount: 'Saisir le montant', convertedAmount: 'Montant converti', noResults: 'Veuillez sélectionner des devises et saisir des montants pour voir les résultats' });
-    Object.assign(dict.es, { enterAmount: 'Introducir monto', convertedAmount: 'Importe convertido', noResults: 'Seleccione monedas e ingrese montos para ver resultados' });
-    Object.assign(dict.ja, { enterAmount: '金額を入力', convertedAmount: '換算額', noResults: '通貨を選択し金額を入力して結果を表示' });
-    Object.assign(dict.de, { enterAmount: 'Betrag eingeben', convertedAmount: 'Umgerechneter Betrag', noResults: 'Bitte Währungen wählen und Beträge eingeben, um Ergebnisse zu sehen' });
-    Object.assign(dict.ko, { enterAmount: '금액 입력', convertedAmount: '변환 금액', noResults: '통화를 선택하고 금액을 입력하여 결과 보기' });
-    Object.assign(dict.ru, { enterAmount: 'Введите сумму', convertedAmount: 'Конвертированная сумма', noResults: 'Выберите валюты и введите суммы для просмотра результатов' });
+    Object.assign(dict.en, { 
+        enterAmount: 'Enter amount', 
+        convertedAmount: 'Converted Amount', 
+        noResults: 'Please select currencies and enter amounts to view conversion results',
+        switchedToDarkTheme: 'Switched to dark theme',
+        switchedToLightTheme: 'Switched to light theme'
+    });
+    Object.assign(dict.zh, { 
+        enterAmount: '输入金额', 
+        convertedAmount: '转换金额', 
+        noResults: '请选择货币并输入金额以查看转换结果',
+        switchedToDarkTheme: '已切换到暗色主题',
+        switchedToLightTheme: '已切换到亮色主题'
+    });
+    Object.assign(dict.fr, { 
+        enterAmount: 'Saisir le montant', 
+        convertedAmount: 'Montant converti', 
+        noResults: 'Veuillez sélectionner des devises et saisir des montants pour voir les résultats',
+        switchedToDarkTheme: 'Passé au thème sombre',
+        switchedToLightTheme: 'Passé au thème clair'
+    });
+    Object.assign(dict.es, { 
+        enterAmount: 'Introducir monto', 
+        convertedAmount: 'Importe convertido', 
+        noResults: 'Seleccione monedas e ingrese montos para ver resultados',
+        switchedToDarkTheme: 'Cambiado al tema oscuro',
+        switchedToLightTheme: 'Cambiado al tema claro'
+    });
+    Object.assign(dict.ja, { 
+        enterAmount: '金額を入力', 
+        convertedAmount: '換算額', 
+        noResults: '通貨を選択し金額を入力して結果を表示',
+        switchedToDarkTheme: 'ダークテーマに切り替えました',
+        switchedToLightTheme: 'ライトテーマに切り替えました'
+    });
+    Object.assign(dict.de, { 
+        enterAmount: 'Betrag eingeben', 
+        convertedAmount: 'Umgerechneter Betrag', 
+        noResults: 'Bitte Währungen wählen und Beträge eingeben, um Ergebnisse zu sehen',
+        switchedToDarkTheme: 'Zu dunklem Theme gewechselt',
+        switchedToLightTheme: 'Zu hellem Theme gewechselt'
+    });
+    Object.assign(dict.ko, { 
+        enterAmount: '금액 입력', 
+        convertedAmount: '변환 금액', 
+        noResults: '통화를 선택하고 금액을 입력하여 결과 보기',
+        switchedToDarkTheme: '다크 테마로 전환되었습니다',
+        switchedToLightTheme: '라이트 테마로 전환되었습니다'
+    });
+    Object.assign(dict.ru, { 
+        enterAmount: 'Введите сумму', 
+        convertedAmount: 'Конвертированная сумма', 
+        noResults: 'Выберите валюты и введите суммы для просмотра результатов',
+        switchedToDarkTheme: 'Переключено на темную тему',
+        switchedToLightTheme: 'Переключено на светлую тему'
+    });
     return dict[lang] || dict.en;
 }
 
@@ -2271,13 +2321,20 @@ function initializeThemeAndLanguage() {
     const params = new URLSearchParams(window.location.search);
     const queryLang = params.get('lang');
     const supportedLangs = ['en', 'zh', 'fr', 'es', 'ja', 'de', 'ko', 'ru'];
-    let initialLang = 'en';
+    let initialLang = 'en'; // 默认英语
+    
+    // 优先使用URL参数
     if (queryLang && supportedLangs.includes(queryLang)) {
         initialLang = queryLang;
+        console.log('使用URL参数语言:', initialLang);
     } else {
+        // 其次使用本地存储的语言设置
         const savedLang = localStorage.getItem('lang');
         if (savedLang && supportedLangs.includes(savedLang)) {
             initialLang = savedLang;
+            console.log('使用本地存储语言:', initialLang);
+        } else {
+            console.log('使用默认语言: 英语');
         }
     }
     document.body.setAttribute('data-lang', initialLang);
@@ -2377,7 +2434,7 @@ function testLanguageButton() {
     console.log('当前显示:', languageText.textContent);
     console.log('当前语言:', document.body.getAttribute('data-lang'));
     
-    // 测试面板显示
+    // 测试面板显示（不自动切换语言）
     console.log('测试面板显示...');
     showLanguagePanel();
     
@@ -2386,20 +2443,9 @@ function testLanguageButton() {
         console.log('面板是否显示:', isVisible);
         
         if (isVisible) {
-            // 测试选择语言
-            console.log('测试选择中文...');
-            selectLanguage('zh');
-            
-            setTimeout(() => {
-                console.log('选择后显示:', languageText.textContent);
-                console.log('选择后语言:', document.body.getAttribute('data-lang'));
-                
-                // 恢复英文
-                setTimeout(() => {
-                    selectLanguage('en');
-                    console.log('恢复英文完成');
-                }, 1000);
-            }, 100);
+            console.log('面板显示测试完成，语言切换测试已禁用');
+            // 隐藏面板
+            hideLanguagePanel();
         }
     }, 100);
     
@@ -2461,22 +2507,16 @@ function testLanguagePanel() {
     console.log('hideLanguagePanel函数:', typeof hideLanguagePanel);
     console.log('selectLanguage函数:', typeof selectLanguage);
     
-    // 测试面板显示
+    // 测试面板显示（不自动切换语言）
     console.log('测试面板显示...');
     try {
         showLanguagePanel();
         console.log('面板显示成功');
         
         setTimeout(() => {
-            console.log('测试选择法语...');
-            selectLanguage('fr');
-            console.log('选择法语成功');
-            
-            // 恢复英文
-            setTimeout(() => {
-                selectLanguage('en');
-                console.log('恢复英文完成');
-            }, 1000);
+            console.log('面板显示测试完成，语言切换测试已禁用');
+            // 隐藏面板
+            hideLanguagePanel();
         }, 500);
     } catch (error) {
         console.error('面板操作失败:', error);
@@ -2523,12 +2563,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // 运行测试
-    setTimeout(() => {
-        testFunctions();
-        testLanguageButton();
-        testLanguagePanel();
-    }, 1000);
+    // 测试函数已移除，避免页面加载时自动切换语言
+    // 如需测试，请在控制台手动调用：testFunctions(), testLanguageButton(), testLanguagePanel()
 });
 
 // 响应式处理

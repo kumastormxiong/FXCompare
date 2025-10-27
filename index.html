@@ -116,11 +116,39 @@
             </div>
             <!-- Share/Export Toolbar (moved under function description) -->
             <div class="share-icon-toolbar">
-                <button class="share-icon-btn" onclick="capturePanelsAndDownload()" title="导出图片" data-zh-title="导出图片" data-en-title="Export Image">
+                <div class="toolbar-label">
+                    <span class="zh-text">导出图片</span>
+                    <span class="en-text">Export Image</span>
+                    <span class="fr-text">Exporter l'image</span>
+                    <span class="es-text">Exportar imagen</span>
+                    <span class="ja-text">画像をエクスポート</span>
+                    <span class="de-text">Bild exportieren</span>
+                    <span class="ko-text">이미지 내보내기</span>
+                    <span class="ru-text">Экспорт изображения</span>
+                </div>
+                <button class="share-icon-btn" onclick="capturePanelsAndDownload()" 
+                        title="导出图片" 
+                        data-zh-title="导出图片" 
+                        data-en-title="Export Image"
+                        data-fr-title="Exporter l'image"
+                        data-es-title="Exportar imagen"
+                        data-ja-title="画像をエクスポート"
+                        data-de-title="Bild exportieren"
+                        data-ko-title="이미지 내보내기"
+                        data-ru-title="Экспорт изображения">
                     <i class="fas fa-download"></i>
                 </button>
-                <button class="share-icon-btn" onclick="shareToX()" title="分享到X" data-zh-title="分享到X" data-en-title="Share to X">
-                    <i class="fab fa-x-twitter"></i>
+                <button class="share-icon-btn" onclick="shareToX()" 
+                        title="分享到X" 
+                        data-zh-title="分享到X" 
+                        data-en-title="Share to X"
+                        data-fr-title="Partager sur X"
+                        data-es-title="Compartir en X"
+                        data-ja-title="Xで共有"
+                        data-de-title="Auf X teilen"
+                        data-ko-title="X에서 공유"
+                        data-ru-title="Поделиться в X">
+                    <i class="fas fa-share-alt"></i>
                 </button>
             </div>
         </header>

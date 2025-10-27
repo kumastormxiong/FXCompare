@@ -93,8 +93,16 @@ body {
 /* Share Icon Toolbar */
 .share-icon-toolbar {
     display: flex;
-    gap: 10px;
+    align-items: center;
+    gap: 15px;
     padding: 10px 20px 15px 20px;
+}
+
+.toolbar-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--secondary-text);
+    margin-right: 5px;
 }
 
 .share-icon-btn {
@@ -544,6 +552,7 @@ body {
     font-size: 1rem;
     cursor: pointer;
     transition: var(--transition);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
 }
 
 .target-currency-input-item .currency-select select:focus {
@@ -760,6 +769,7 @@ body {
     font-size: 1rem;
     cursor: pointer;
     transition: var(--transition);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
 }
 
 .currency-select select:focus {

@@ -1,0 +1,5 @@
+[33m25f5eb9[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m Merge branch 'feature/multi-language-and-image-export'
+[33m17f26f4[m Merge branch 'main' of https://github.com/kumastormxiong/FXCompare
+[33m0435305[m[33m ([m[1;31morigin/feature/multi-language-and-image-export[m[33m, [m[1;32mfeature/multi-language-and-image-export[m[33m)[m feat: 添加logo和优化favicon配置
+[33m87e801f[m feat: 添加多语言支持和图片导出功能
+[33m835abca[m SEO: 默认英文收录与摘要优化（hreflang/canonical/description）；语言初始化支持?lang=并为中文文本加data-nosnippet
