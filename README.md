@@ -4,7 +4,7 @@
 
 ## 🌐 在线访问
 
-**立即体验**: [FXCompare.Online](https://kumastormxiong.github.io/FXCompare/)
+**立即体验**: [FXCompare.Online](https://fxcompare.online)
 
 **Copyright (c) 2025 FXCompare. All rights reserved.**
 
